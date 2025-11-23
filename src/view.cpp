@@ -6,11 +6,13 @@
 
 void Todo::View::display_list(const std::vector<Todo::Task> todo_list)
 {
+  std::cout << '\n';
   for (const auto &task : todo_list)
   {
     std::cout << task.id << ". " << task.desc << ' '
               << (task.completion ? "(done)" : "(in progress)") << '\n';
   }
+  std::cout << '\n';
 }
 
 void Todo::View::display_msg(const std::string &msg)

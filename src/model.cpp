@@ -17,6 +17,48 @@ Todo::Model::~Model()
   save_file();
 }
 
+void Todo::Model::load_file()
+{
+  dir_init();
+
+  std::ifstream infile{TODO_DIR / TODO_FILE};
+  if (infile.is_open() == false)
+  {
+    std::cerr << "file not opened\n";
+    std::exit(EXIT_FAILURE);
+  }
+
+  size_t size = std::filesystem::file_size(TODO_DIR / TODO_FILE);
+  std::string buf(size, ' ');
+  infile.read(&buf[0], size);
+
+  infile.close();
+
+  try
+  {
+    boost::json::value jv = boost::json::parse(buf);
+    if (jv.is_array() == false)
+    {
+      std::cerr << "json parsing error: json was not an array\n";
+      std::exit(EXIT_FAILURE);
+    }
+
+    todo_list_ = boost::json::value_to<std::vector<Todo::Task>>(jv);
+  }
+  catch (const std::exception &e)
+  {
+    std::cerr << "json parsing error: " << e.what() << '\n';
+  }
+}
+
+void Todo::Model::save_file()
+{
+  std::ofstream outfile{TODO_DIR / TODO_FILE};
+  boost::json::value jv = boost::json::value_from(todo_list_);
+  outfile << jv;
+  outfile.close();
+}
+
 void Todo::Model::dir_init()
 {
   try
@@ -64,46 +106,9 @@ void Todo::Model::remove(size_t index)
   }
 }
 
-void Todo::Model::load_file()
+void Todo::Model::change_task_status(size_t index)
 {
-  dir_init();
-
-  std::ifstream infile{TODO_DIR / TODO_FILE};
-  if (infile.is_open() == false)
-  {
-    std::cerr << "file not opened\n";
-    std::exit(EXIT_FAILURE);
-  }
-
-  size_t size = std::filesystem::file_size(TODO_DIR / TODO_FILE);
-  std::string buf(size, ' ');
-  infile.read(&buf[0], size);
-
-  infile.close();
-
-  try
-  {
-    boost::json::value jv = boost::json::parse(buf);
-    if (jv.is_array() == false)
-    {
-      std::cerr << "json parsing error: json was not an array\n";
-      std::exit(EXIT_FAILURE);
-    }
-
-    todo_list_ = boost::json::value_to<std::vector<Todo::Task>>(jv);
-  }
-  catch (const std::exception &e)
-  {
-    std::cerr << "json parsing error: " << e.what() << '\n';
-  }
-}
-
-void Todo::Model::save_file()
-{
-  std::ofstream outfile{TODO_DIR / TODO_FILE};
-  boost::json::value jv = boost::json::value_from(todo_list_);
-  outfile << jv;
-  outfile.close();
+  todo_list_[index - 1].completion = not todo_list_[index - 1].completion;
 }
 
 const std::vector<Todo::Task> &Todo::Model::get_list()

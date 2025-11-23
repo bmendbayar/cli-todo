@@ -66,6 +66,13 @@ public:
   void save_file();
 
   /**
+   * @brief Toggles the completion status of @p index task.
+   *
+   * @param index Index of task to change.
+   */
+  void change_task_status(size_t index);
+
+  /**
    * @brief Returns a const reference of the todo list vector.
    */
   const std::vector<Task> &get_list();

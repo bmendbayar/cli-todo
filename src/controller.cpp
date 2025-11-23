@@ -38,9 +38,18 @@ void Todo::Controller::run()
 
       case 3:
       {
-        std::cout << '\n';
         pass_display();
+        break;
+      }
+
+      case 4:
+      {
+        pass_display();
+        std::cout << "which task's status will you change: ";
+        size_t index;
+        std::cin >> index;
         std::cout << '\n';
+        pass_status_change(index);
         break;
       }
 
@@ -59,6 +68,7 @@ int Todo::Controller::get_input()
   std::cout << "1. add\n";
   std::cout << "2. remove\n";
   std::cout << "3. show\n";
+  std::cout << "4. change status\n";
   std::cout << "0. exit\n";
   std::cout << "choose: ";
   std::cin >> x;
@@ -78,4 +88,9 @@ void Todo::Controller::pass_rm(size_t index)
 void Todo::Controller::pass_display()
 {
   view_.display_list(model_.get_list());
+}
+
+void Todo::Controller::pass_status_change(size_t index)
+{
+  model_.change_task_status(index);
 }

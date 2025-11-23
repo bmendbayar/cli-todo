@@ -27,5 +27,7 @@ private:
   void pass_rm(size_t index);
 
   void pass_display();
+
+  void pass_status_change(size_t index);
 };
 }  // namespace Todo

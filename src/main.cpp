@@ -2,9 +2,9 @@
 
 #include "controller.h"
 
-int main()
+int main(int argc, char **argv)
 {
-  Todo::Controller app;
+  Todo::Controller app(argc, argv);
   app.run();
   return 0;
 }

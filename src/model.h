@@ -8,13 +8,21 @@
 
 namespace Todo
 {
+enum class Status : uint8_t
+{
+  NOT_STARTED = 1,
+  IN_PROGRESS = 2,
+  COMPLETED = 3
+};
+BOOST_DESCRIBE_ENUM(Status, NOT_STARTED, IN_PROGRESS, COMPLETED);
+
 struct Task
 {
   std::string desc;
   std::vector<Task> child_tasks;
-  bool completion;
+  Status status;
 };
-BOOST_DESCRIBE_STRUCT(Task, (), (desc, child_tasks, completion));
+BOOST_DESCRIBE_STRUCT(Task, (), (desc, child_tasks, status));
 
 class Model
 {
@@ -38,14 +46,16 @@ public:
    *
    * @param task_desc Description of task to add.
    */
-  void add(const std::string &item_desc, size_t index = 0);
+  bool add(const std::string &item_desc, const std::vector<size_t> &path);
 
   /**
    * @brief Remove @p index task from the todo list.
    *
    * @param index Index of task to remove.
    */
-  void remove(size_t index);
+  bool remove(const std::vector<size_t> &path);
+
+  void clear();
 
   /**
    * @brief Load from a JSON file to populate todo list vector.
@@ -64,7 +74,7 @@ public:
    *
    * @param index Index of task to change.
    */
-  void change_task_status(size_t index);
+  bool change_task_status(const std::vector<size_t> &path, int status);
 
   /**
    * @brief Returns a const reference of the todo list vector.

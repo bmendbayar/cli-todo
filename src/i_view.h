@@ -1,13 +1,21 @@
 #pragma once
 
+#include <ncurses.h>
+
 #include "view.h"
 
 namespace Todo
 {
-class BasicView : public View
+class IView : public View
 {
+private:
+  WINDOW *menu_win_;
+  WINDOW *list_win_;
+
 public:
-  BasicView() = default;
+  IView();
+
+  virtual ~IView();
 
   virtual MenuOptions get_menu_opt() override;
 

@@ -10,11 +10,11 @@ namespace Todo
 enum class MenuOptions
 {
   EXIT = 0,
-  ADD,
-  REMOVE,
-  DISPLAY,
-  CHANGE_STATUS,
-  INVALID
+  ADD = 1,
+  REMOVE = 2,
+  CLEAR = 3,
+  CHANGE_STATUS = 4,
+  INVALID = 5
 };
 
 class View
@@ -29,7 +29,9 @@ public:
 
   virtual std::string get_task_desc(const std::string &msg) = 0;
 
-  virtual size_t get_index(const std::string &msg) = 0;
+  virtual std::vector<size_t> get_path(const std::string &msg) = 0;
+
+  virtual uint8_t get_status_change(const std::string &msg) = 0;
 
   virtual void display_list(const std::vector<Todo::Task> &todo_list,
                             size_t level = 0) = 0;

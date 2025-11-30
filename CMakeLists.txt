@@ -15,6 +15,7 @@ set(SRC_FILES
     src/basic_view.cpp
     src/model.cpp
     src/controller.cpp
+    src/i_view.cpp
 )
 
 include_directories(

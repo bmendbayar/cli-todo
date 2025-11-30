@@ -8,12 +8,14 @@
 
 #include "model.h"
 
-Todo::Model::Model()
+namespace Todo
+{
+Model::Model()
 {
   load_file();
 }
 
-void Todo::Model::load_file()
+void Model::load_file()
 {
   dir_init();
 
@@ -27,7 +29,6 @@ void Todo::Model::load_file()
   size_t size = std::filesystem::file_size(TODO_DIR / TODO_FILE);
   std::string buf(size, ' ');
   infile.read(&buf[0], size);
-
   infile.close();
 
   try
@@ -39,7 +40,7 @@ void Todo::Model::load_file()
       std::exit(EXIT_FAILURE);
     }
 
-    todo_list_ = boost::json::value_to<std::vector<Todo::Task>>(jv);
+    todo_list_ = boost::json::value_to<std::vector<Task>>(jv);
   }
   catch (const std::exception &e)
   {
@@ -48,7 +49,7 @@ void Todo::Model::load_file()
   }
 }
 
-void Todo::Model::save_file()
+void Model::save_file()
 {
   std::ofstream outfile{TODO_DIR / TODO_FILE};
   boost::json::value jv = boost::json::value_from(todo_list_);
@@ -56,7 +57,7 @@ void Todo::Model::save_file()
   outfile.close();
 }
 
-void Todo::Model::dir_init()
+void Model::dir_init()
 {
   try
   {
@@ -79,45 +80,73 @@ void Todo::Model::dir_init()
   }
   catch (const std::exception &e)
   {
-    std::cerr << e.what() << '\n';
+    return;
   }
 }
 
-void Todo::Model::add(const std::string &task_desc, size_t index)
+bool Model::add(const std::string &task_desc, const std::vector<size_t> &path)
 {
-  if (index != 0)
+  if (path.empty())
   {
-    if (index > todo_list_.size())
-    {
-      throw std::out_of_range("Parent task ID is out of range");
-    }
-    todo_list_[index - 1].child_tasks.emplace_back(Task{task_desc, {}, false});
+    todo_list_.emplace_back(Task{task_desc, {}, Status::NOT_STARTED});
+    return true;
   }
-  else
+
+  Task *curr = &(todo_list_.at(path[0]));
+  for (auto it = path.begin() + 1; it < path.end(); ++it)
   {
-    todo_list_.emplace_back(Task{task_desc, {}, false});
+    curr = &(curr->child_tasks.at(*it));
   }
+
+  curr->child_tasks.emplace_back(Task{task_desc, {}, Status::NOT_STARTED});
+  return true;
 }
 
-void Todo::Model::remove(size_t index)
+bool Model::remove(const std::vector<size_t> &path)
 {
-  if (index == 0 || index > todo_list_.size())
+  if (path.empty())
   {
-    throw std::out_of_range("Task ID out of range");
+    return false;
   }
-  todo_list_.erase(todo_list_.begin() + index - 1);
+
+  if (path.size() == 1)
+  {
+    todo_list_.erase(todo_list_.begin() + path[0]);
+    return true;
+  }
+
+  Task *curr = &(todo_list_.at(path[0]));
+  for (auto it = path.begin() + 1; it < path.end() - 1; ++it)
+  {
+    curr = &(curr->child_tasks.at(*it));
+  }
+  curr->child_tasks.erase(curr->child_tasks.begin() + *(path.end() - 1));
+  return true;
 }
 
-void Todo::Model::change_task_status(size_t index)
+void Model::clear()
 {
-  if (index == 0 || index > todo_list_.size())
-  {
-    throw std::out_of_range("Task ID out of range");
-  }
-  todo_list_[index - 1].completion = not todo_list_[index - 1].completion;
+  todo_list_.clear();
 }
 
-const std::vector<Todo::Task> &Todo::Model::get_list()
+bool Model::change_task_status(const std::vector<size_t> &path, int status)
+{
+  if (path.empty())
+  {
+    return false;
+  }
+
+  Task *curr = &(todo_list_.at(path[0]));
+  for (auto it = path.begin() + 1; it < path.end(); ++it)
+  {
+    curr = &(curr->child_tasks.at(*it));
+  }
+  curr->status = static_cast<Status>(status);
+  return true;
+}
+
+const std::vector<Task> &Model::get_list()
 {
   return todo_list_;
 }
+}  // namespace Todo

@@ -1,13 +1,36 @@
 # CLI Todo
 
-A simple command-line todo list manager to track your tasks, boost your productivity, and streamline your workflow right from your terminal.
+A persistent, hierarchical command-line To-Do application allowing infinite subtasks, built with a flexible architecture to support both rich (Ncurses) and standard text interfaces.
 
-## Features
+## Demo
 
-- Add, view, update, and remove tasks
-- Mark tasks as complete or incomplete or in-progress
-- Data persists between sessions
-- Lightweight and easy to use
+![Project Demo](assets/demo.gif)
+
+## Architectural Design
+
+MVC Pattern I chose Model-View-Controller (MVC) to decouple data management from the user interface, allows for swapping between a basic text UI and a rich terminal UI without changing core logic.
+
+* Model: Manages the recursive Task data structure and handles JSON file I/O using Boost.JSON.
+* View: An abstract base class defining the interface.
+  * BasicView: Standard text-based I/O.
+  * IView: Ncurses-based TUI for an interactive experience.
+* Controller: Connects the two, parsing user input strings (like paths "1 2") into model commands.
+
+
+## Key Features
+
+* Hierarchical Tasks: Task structs contain a vector of children, enabling infinite nesting.
+* Persistence: Auto-saves/loads to .todo/todo_list.json to prevent data loss.
+* Dual Interface: Run with -b for basic mode or default to the Ncurses windowed interface.
+
+## Roadmap
+
+- [ ] Task priority
+- [ ] Undo/redo
+- [ ] Copy/pase
+- [ ] Due dates
+- [ ] Task inheritance
+- [ ] Vi view
 
 ## Installation
 

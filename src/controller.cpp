@@ -147,8 +147,9 @@ void Todo::Controller::handle_status_change()
   {
     std::string spath =
         view_->get_input("Enter the path of the task to change the status of: ");
-    std::string sstatus =
-        view_->get_input("Which status would you like to change it to: ");
+    std::string sstatus = view_->get_input(
+        "Which status would you like to change it to (1-Not started, 2-In progress, "
+        "3-Completed) ");
 
     model_.change_task_status(parse_path(spath), atoi(&sstatus[0]));
   }

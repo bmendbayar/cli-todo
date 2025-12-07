@@ -22,8 +22,7 @@ std::string Todo::BasicView::get_input(const std::string &msg)
   return buffer;
 }
 
-void Todo::BasicView::display_list(const std::vector<Todo::Task> &todo_list,
-                                   size_t level)
+void Todo::BasicView::display_list(const std::vector<Todo::Task> &todo_list, size_t level)
 {
   size_t id = 1;
   for (const auto &t : todo_list)
@@ -43,8 +42,7 @@ void Todo::BasicView::display_list(const std::vector<Todo::Task> &todo_list,
       }
     }();
 
-    std::cout << std::string(level, ' ') << id << ". " << status << ' '
-              << t.desc << '\n';
+    std::cout << std::string(level, ' ') << id << ". " << status << ' ' << t.desc << '\n';
 
     if (todo_list[id - 1].child_tasks.size() != 0)
     {

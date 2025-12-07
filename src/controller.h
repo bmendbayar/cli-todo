@@ -10,8 +10,8 @@ namespace Todo
 class Controller
 {
 private:
-  Model model_; ///< The [M]odel of the MVC.
-  View *view_; ///< The [V]iew of the MVC.
+  Model model_;  ///< The [M]odel of the MVC.
+  View *view_;   ///< The [V]iew of the MVC.
 
 public:
   /**

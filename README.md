@@ -16,7 +16,7 @@ MVC Pattern I chose Model-View-Controller (MVC) to decouple data management from
   * IView: Ncurses-based TUI for an interactive experience.
 * Controller: Connects the two, parsing user input strings (like paths "1 2") into model commands.
 
-![MVC Diagram](assets/mvc_diagram.png)
+<img src="assets/mvc_diagram.png" width="30%" />
 
 
 ## Key Features

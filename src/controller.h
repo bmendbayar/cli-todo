@@ -52,6 +52,11 @@ private:
   void handle_status_change();
 
   /**
+   * @brief Handles the priority change of a task.
+   */
+  void handle_prio_change();
+
+  /**
    * @brief Parses a string of numbers to a vector.
    *
    * @param spath The string to parse.

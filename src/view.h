@@ -13,8 +13,9 @@ enum class MenuOptions
   ADD = 1,
   REMOVE = 2,
   CHANGE_STATUS = 3,
-  CLEAR = 4,
-  INVALID = 5
+  CHANGE_PRIO = 4,
+  CLEAR = 5,
+  INVALID = 6
 };
 
 class View

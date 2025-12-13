@@ -144,7 +144,24 @@ void IView::display_list(const std::vector<Todo::Task> &todo_list, size_t level)
 
     int y = getcury(list_pad_);
     int x = 1 + (level * 2);
-    mvwprintw(list_pad_, y, x, "%zu. %s %s\n", i + 1, status.c_str(), t.desc.c_str());
+    std::string prio = [&t]() -> std::string
+    {
+      if (t.prio > 80)
+      {
+        return "High";
+      }
+      else if (t.prio > 20)
+      {
+        return "Medium";
+      }
+      else
+      {
+        return "Low";
+      }
+    }();
+
+    mvwprintw(list_pad_, y, x, "%zu. %s %s [%s]\n", i + 1, status.c_str(), t.desc.c_str(),
+              prio.c_str());
 
     if (!t.child_tasks.empty())
     {

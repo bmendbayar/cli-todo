@@ -129,6 +129,18 @@ void Model::clear()
   todo_list_.clear();
 }
 
+void Model::change_child_task_status(Task &task, Status status)
+{
+  for (auto &t : task.child_tasks)
+  {
+    t.status = status;
+    if (t.child_tasks.empty() == false)
+    {
+      change_child_task_status(t, status);
+    }
+  }
+}
+
 void Model::change_task_status(const std::vector<size_t> &path, int status)
 {
   if (path.empty())
@@ -139,9 +151,20 @@ void Model::change_task_status(const std::vector<size_t> &path, int status)
   Task *curr = &(todo_list_.at(path[0]));
   for (auto it = path.begin() + 1; it < path.end(); ++it)
   {
+    if (status == 2)
+    {
+      curr->status = Status::IN_PROGRESS;
+    }
+
     curr = &(curr->child_tasks.at(*it));
   }
   curr->status = static_cast<Status>(status);
+
+  if (curr->child_tasks.empty() == false)
+  {
+    change_child_task_status(*curr, static_cast<Status>(status));
+  }
+
   return;
 }
 

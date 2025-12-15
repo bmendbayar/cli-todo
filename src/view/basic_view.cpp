@@ -1,28 +1,31 @@
-#include <curses.h>
+#include <ncurses.h>
 
 #include <iostream>
 #include <limits>
 #include <string>
-#include <vector>
 
 #include "basic_view.h"
+#include "task.h"
+#include "user_input.h"
 
+namespace Todo
+{
 void clear_input_buf()
 {
   std::cin.clear();
   std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 }
 
-std::string Todo::BasicView::get_input(const std::string &msg)
+UserInput BasicView::get_input(const std::string &msg)
 {
   std::string buffer;
   std::cout << msg;
   std::getline(std::cin, buffer);
   clear_input_buf();
-  return buffer;
+  return {buffer, false};
 }
 
-void Todo::BasicView::display_list(const std::vector<Todo::Task> &todo_list, size_t level)
+void BasicView::display_list(const std::vector<Task> &todo_list, size_t level)
 {
   size_t id = 1;
   for (const auto &t : todo_list)
@@ -54,7 +57,8 @@ void Todo::BasicView::display_list(const std::vector<Todo::Task> &todo_list, siz
   std::cout << '\n';
 }
 
-void Todo::BasicView::display_msg(const std::string &msg)
+void BasicView::display_msg(const std::string &msg)
 {
   std::cout << msg << '\n';
 }
+}  // namespace Todo

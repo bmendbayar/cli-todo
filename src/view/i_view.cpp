@@ -6,6 +6,7 @@
 #include <vector>
 
 #include "i_view.h"
+#include "task.h"
 
 namespace Todo
 {
@@ -49,7 +50,7 @@ void IView::refresh_list_view()
   prefresh(list_pad_, scroll_offset_, 0, 2, 1, list_height_ - 2, list_width_ - 2);
 }
 
-std::string IView::get_input(const std::string &msg)
+UserInput IView::get_input(const std::string &msg)
 {
   wclear(menu_win_);
   box(menu_win_, 0, 0);
@@ -113,10 +114,10 @@ std::string IView::get_input(const std::string &msg)
   }
 
   curs_set(0);
-  return buffer;
+  return {buffer, false};
 }
 
-void IView::display_list(const std::vector<Todo::Task> &todo_list, size_t level)
+void IView::display_list(const std::vector<Task> &todo_list, size_t level)
 {
   if (level == 0)
   {

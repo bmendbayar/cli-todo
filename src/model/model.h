@@ -6,25 +6,10 @@
 #include <string>
 #include <vector>
 
+#include "task.h"
+
 namespace Todo
 {
-enum class Status : uint8_t
-{
-  NOT_STARTED = 1,
-  IN_PROGRESS = 2,
-  COMPLETED = 3
-};
-BOOST_DESCRIBE_ENUM(Status, NOT_STARTED, IN_PROGRESS, COMPLETED);
-
-struct Task
-{
-  std::string desc;
-  std::vector<Task> child_tasks;
-  int prio;
-  Status status;
-};
-BOOST_DESCRIBE_STRUCT(Task, (), (desc, child_tasks, prio, status));
-
 class Model
 {
 private:
@@ -49,8 +34,7 @@ public:
    * @param prio Priority of task to add.
    * @param path Path of task to add.
    */
-  void add(const std::string &item_desc, const int prio,
-           const std::vector<size_t> &path);
+  void add(const std::string &item_desc, const int prio, const std::vector<size_t> &path);
 
   /**
    * @brief Remove @p index task from the todo list.

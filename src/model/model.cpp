@@ -6,6 +6,7 @@
 #include <iostream>
 
 #include "model.h"
+#include "task.h"
 
 namespace Todo
 {

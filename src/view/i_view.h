@@ -33,7 +33,7 @@ public:
    *
    * @param msg String to display.
    */
-  virtual std::string get_input(const std::string &msg) override;
+  virtual UserInput get_input(const std::string &msg) override;
 
   /**
    * @brief Display @p task list to screen.
@@ -41,7 +41,7 @@ public:
    * @param todo_list Const reference to a vector.
    * @param level Recursion depth.
    */
-  virtual void display_list(const std::vector<Todo::Task> &todo_list,
+  virtual void display_list(const std::vector<Task> &todo_list,
                             size_t level = 0) override;
 
   /**

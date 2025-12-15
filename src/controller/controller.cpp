@@ -6,9 +6,12 @@
 #include "basic_view.h"
 #include "controller.h"
 #include "i_view.h"
+#include "menu_opts.h"
 #include "view.h"
 
-Todo::Controller::Controller(int argc, char **argv)
+namespace Todo
+{
+Controller::Controller(int argc, char **argv)
 {
   if (argc == 1)
   {
@@ -24,13 +27,13 @@ Todo::Controller::Controller(int argc, char **argv)
   }
 }
 
-void Todo::Controller::run()
+void Controller::run()
 {
   bool running = true;
   while (running)
   {
     handle_display();
-    std::string sopt = view_->get_input(
+    UserInput sopt = view_->get_input(
         "=== Todo Menu ===\n"
         "1. Add task\n"
         "2. Remove task\n"
@@ -38,12 +41,12 @@ void Todo::Controller::run()
         "4. Change task priority\n"
         "5. Clear list\n"
         "0. Exit\n");
-    if (sopt.length() > 1)
+    if (sopt.text.length() > 1)
     {
       continue;
     }
 
-    MenuOptions opt = static_cast<MenuOptions>(std::stoul(sopt));
+    MenuOptions opt = static_cast<MenuOptions>(std::stoul(sopt.text));
     switch (opt)
     {
       case MenuOptions::ADD:
@@ -80,7 +83,7 @@ void Todo::Controller::run()
   }
 }
 
-std::vector<size_t> Todo::Controller::parse_path(const std::string &spath)
+std::vector<size_t> Controller::parse_path(const std::string &spath)
 {
   std::vector<size_t> path;
   path.reserve(spath.length());
@@ -101,14 +104,15 @@ std::vector<size_t> Todo::Controller::parse_path(const std::string &spath)
   return path;
 }
 
-void Todo::Controller::handle_add()
+void Controller::handle_add()
 {
   try
   {
-    std::string desc = view_->get_input("Enter the description of your task: ");
-    std::string spath = view_->get_input("Enter the path of the new task: ");
-    std::string sprio = view_->get_input("Enter the priority of the task (1-100): ");
-    model_.add(desc, std::stoul(sprio), parse_path(spath));
+    UserInput desc = view_->get_input("Enter the description of your task: ");
+    UserInput path = view_->get_input("Enter the path of the new task: ");
+    UserInput prio = view_->get_input("Enter the priority of the task (1-100): ");
+
+    model_.add(desc.text, std::stoul(prio.text), parse_path(path.text));
   }
   catch (const std::out_of_range &e)
   {
@@ -120,12 +124,12 @@ void Todo::Controller::handle_add()
   }
 }
 
-void Todo::Controller::handle_remove()
+void Controller::handle_remove()
 {
   try
   {
-    std::string spath = view_->get_input("Enter the path of the task to remove: ");
-    model_.remove(parse_path(spath));
+    UserInput path = view_->get_input("Enter the path of the task to remove: ");
+    model_.remove(parse_path(path.text));
   }
   catch (const std::out_of_range &e)
   {
@@ -137,27 +141,27 @@ void Todo::Controller::handle_remove()
   }
 }
 
-void Todo::Controller::handle_display()
+void Controller::handle_display()
 {
   view_->display_list(model_.get_list());
 }
 
-void Todo::Controller::handle_clear()
+void Controller::handle_clear()
 {
   model_.clear();
 }
 
-void Todo::Controller::handle_status_change()
+void Controller::handle_status_change()
 {
   try
   {
-    std::string spath =
+    UserInput path =
         view_->get_input("Enter the path of the task to change the status of: ");
-    std::string sstatus = view_->get_input(
+    UserInput status = view_->get_input(
         "Which status would you like to change it to (1-Not started, 2-In progress, "
         "3-Completed): ");
 
-    model_.change_task_status(parse_path(spath), atoi(&sstatus[0]));
+    model_.change_task_status(parse_path(path.text), std::stoul(status.text));
   }
   catch (const std::out_of_range &e)
   {
@@ -169,15 +173,15 @@ void Todo::Controller::handle_status_change()
   }
 }
 
-void Todo::Controller::handle_prio_change()
+void Controller::handle_prio_change()
 {
   try
   {
-    std::string spath =
+    UserInput path =
         view_->get_input("Enter the path of the task to change the priority of: ");
-    std::string sprio =
+    UserInput prio =
         view_->get_input("Enter the value you want to change it to (1-100): ");
-    model_.change_task_prio(parse_path(spath), std::stoul(sprio));
+    model_.change_task_prio(parse_path(path.text), std::stoul(prio.text));
   }
   catch (const std::out_of_range &e)
   {
@@ -188,3 +192,4 @@ void Todo::Controller::handle_prio_change()
     view_->display_msg("Error: " + std::string(e.what()));
   }
 }
+}  // namespace Todo

@@ -33,7 +33,7 @@ public:
    * @param todo_list Const reference to a vector.
    * @param level Recursion depth.
    */
-  virtual void display_list(const std::vector<Task> &todo_list, U16 level = 0) = 0;
+  virtual void display_list(const std::vector<Task> &todo_list, u16 level = 0) = 0;
 
   /**
    * @brief Display @p message to screen.

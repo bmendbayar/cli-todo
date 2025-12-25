@@ -24,6 +24,7 @@ include_directories(
     src/model
     src/view
     src/controller
+    src/misc
 )
 
 add_executable(todo ${SRC_FILES})

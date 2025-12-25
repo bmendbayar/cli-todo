@@ -94,15 +94,15 @@ UserInput ViView::get_input(const std::string &msg)
   return {{}, true};
 }
 
-void ViView::display_list(const std::vector<Task> &todo_list, U16 level)
+void ViView::display_list(const std::vector<Task> &todo_list, u16 level)
 {
   if (level == 0)
   {
     wclear(list_pad_);
   }
 
-  U16 lsize = todo_list.size();
-  for (U16 i = 0; i < lsize; ++i)
+  u16 lsize = todo_list.size();
+  for (u16 i = 0; i < lsize; ++i)
   {
     std::string status;
     if (todo_list[i].status == Status::NOT_STARTED)

@@ -3,9 +3,9 @@
 #include "controller.h"
 
 inline bool pre_order_trav(const std::vector<Todo::Task> &list, int &curr,
-                           const int target, std::vector<Todo::U16> &path)
+                           const int target, std::vector<Todo::u16> &path)
 {
-  for (Todo::U16 i{}; i < list.size(); i++)
+  for (Todo::u16 i{}; i < list.size(); i++)
   {
     path.push_back(i);
     curr++;

@@ -26,7 +26,7 @@ void Model::load_file()
     std::exit(EXIT_FAILURE);
   }
 
-  U64 size = std::filesystem::file_size(TODO_DIR / TODO_FILE);
+  u64 size = std::filesystem::file_size(TODO_DIR / TODO_FILE);
   std::string buf(size, ' ');
   infile.read(&buf[0], size);
   infile.close();
@@ -85,7 +85,7 @@ void Model::dir_init()
 }
 
 void Model::add(const std::string &task_desc, const int prio,
-                const std::vector<U16> &path)
+                const std::vector<u16> &path)
 {
   if (path.empty())
   {
@@ -103,7 +103,7 @@ void Model::add(const std::string &task_desc, const int prio,
   return;
 }
 
-void Model::remove(const std::vector<U16> &path)
+void Model::remove(const std::vector<u16> &path)
 {
   if (path.empty())
     return;
@@ -144,7 +144,7 @@ void Model::change_child_task_status(Task &task, const Status status)
   }
 }
 
-void Model::change_task_status(const std::vector<U16> &path, const int status)
+void Model::change_task_status(const std::vector<u16> &path, const int status)
 {
   if (path.empty())
   {
@@ -171,7 +171,7 @@ void Model::change_task_status(const std::vector<U16> &path, const int status)
   return;
 }
 
-void Model::change_task_prio(const std::vector<U16> &path, const int prio)
+void Model::change_task_prio(const std::vector<u16> &path, const int prio)
 {
   if (path.empty())
   {

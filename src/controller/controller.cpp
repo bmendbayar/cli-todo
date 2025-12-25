@@ -99,9 +99,9 @@ void Controller::run()
 }
 
 inline bool pre_order_trav(const std::vector<Task> &list, int &curr, const int target,
-                           std::vector<U16> &path)
+                           std::vector<u16> &path)
 {
-  for (U16 i{}; i < list.size(); i++)
+  for (u16 i{}; i < list.size(); i++)
   {
     path.push_back(i);
     curr++;
@@ -119,9 +119,9 @@ inline bool pre_order_trav(const std::vector<Task> &list, int &curr, const int t
   return false;
 }
 
-std::vector<U16> Controller::parse_path(const UserInput &user_input)
+std::vector<u16> Controller::parse_path(const UserInput &user_input)
 {
-  std::vector<U16> path;
+  std::vector<u16> path;
 
   if (user_input.vi_mode == false)
   {

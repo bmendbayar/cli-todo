@@ -60,6 +60,6 @@ private:
    * @param user_input The user_input to parse.
    * @return A vector of non-negative integers.
    */
-  std::vector<U16> parse_path(const UserInput &user_input);
+  std::vector<u16> parse_path(const UserInput &user_input);
 };
 }  // namespace Todo

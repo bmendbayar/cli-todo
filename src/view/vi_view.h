@@ -10,15 +10,15 @@ class ViView : public View {
 private:
   WINDOW *list_pad_;
   struct {
-    U16 x{};
-    U16 y{};
+    u16 x{};
+    u16 y{};
   } cursor_;
 
   int border_y_{};
   int border_x_{};
 
   int scroll_offset_{};
-  enum class Mode : U8 {
+  enum class Mode : u8 {
     NORMAL = 0,
     ABNORMAL = 1,
   } mode_ = Mode::NORMAL;
@@ -47,7 +47,7 @@ public:
    * @param todo_list Const reference to a vector.
    * @param level Recursion depth.
    */
-  virtual void display_list(const std::vector<Task> &todo_list, U16 level = 0) override;
+  virtual void display_list(const std::vector<Task> &todo_list, u16 level = 0) override;
 
   /**
    * @brief Display @p message to screen.

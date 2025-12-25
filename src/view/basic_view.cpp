@@ -25,9 +25,9 @@ UserInput BasicView::get_input(const std::string &msg)
   return {buffer, false};
 }
 
-void BasicView::display_list(const std::vector<Task> &todo_list, U16 level)
+void BasicView::display_list(const std::vector<Task> &todo_list, u16 level)
 {
-  U16 id = 1;
+  u16 id = 1;
   for (const auto &t : todo_list) {
     std::string status = [&t]() -> std::string {
       switch (t.status) {

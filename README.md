@@ -14,6 +14,7 @@ MVC Pattern I chose Model-View-Controller (MVC) to decouple data management from
 * View: An abstract base class defining the interface.
   * BasicView: Standard text-based I/O.
   * IView: Ncurses-based TUI for an interactive experience.
+  * ViView: Ncurses-based with Vi-like motions.
 * Controller: Connects the two, parsing user input strings (like paths "121") into model commands.
 
 <img src="assets/mvc_diagram.png" width="50%" />
@@ -22,16 +23,16 @@ MVC Pattern I chose Model-View-Controller (MVC) to decouple data management from
 
 * Hierarchical Tasks: Task structs contain a vector of children, enabling infinite nesting.
 * Persistence: Auto-saves/loads to .todo/todo_list.json to prevent data loss.
-* Dual Interface: Run with -b for basic mode or default to the Ncurses windowed interface.
+* Dual Interface: Run with -b for basic mode or -i for a slightly more interactive moe or default to the Vi-like windowed interface.
 
 ## Roadmap
 
 - [X] Task inheritance
 - [X] Task priority
+- [X] Vi view
 - [ ] Due dates
 - [ ] Undo/redo
-- [ ] Copy/pase
-- [ ] Vi view
+- [ ] Copy/paste
 
 ## Installation
 

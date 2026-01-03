@@ -43,6 +43,18 @@ struct Task {
   }
 };
 
+inline void tag_invoke(boost::json::value_from_tag, boost::json::value &v,
+                       Todo::Task::Status const &s)
+{
+  v = static_cast<int>(s);
+}
+
+inline Todo::Task::Status tag_invoke(boost::json::value_to_tag<Todo::Task::Status>,
+                                     boost::json::value const &v)
+{
+  return static_cast<Todo::Task::Status>(v.as_int64());
+}
+
 BOOST_DESCRIBE_ENUM(Task::Status, NOT_STARTED, IN_PROGRESS, COMPLETED);
 BOOST_DESCRIBE_STRUCT(Task, (), (desc, child_tasks, priority, status));
 }  // namespace Todo

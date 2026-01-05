@@ -72,6 +72,10 @@ enum class \mbox{\hyperlink{namespace_todo_a1e8c06410e6dedcc2b8bd5c4d1145a3c}{Me
 \item 
 bool \mbox{\hyperlink{namespace_todo_a42f6ee3e71cc2e80081e5983e742a92f}{pre\+\_\+order\+\_\+trav}} (const std\+::vector$<$ \mbox{\hyperlink{struct_todo_1_1_task}{Task}} $>$ \&list, int \&curr, const int target, std\+::vector$<$ \mbox{\hyperlink{namespace_todo_a0f033048846c82ded9882f3706ba4dc5}{u16}} $>$ \&path)
 \item 
+void \mbox{\hyperlink{namespace_todo_a0138a31201aeef6c1be492a796e69f3e}{tag\+\_\+invoke}} (boost\+::json\+::value\+\_\+from\+\_\+tag, boost\+::json\+::value \&v, \mbox{\hyperlink{struct_todo_1_1_task_a0dc2492f114687879f5a40951ed832e6}{Todo\+::\+Task\+::\+Status}} const \&s)
+\item 
+\mbox{\hyperlink{struct_todo_1_1_task_a0dc2492f114687879f5a40951ed832e6}{Todo\+::\+Task\+::\+Status}} \mbox{\hyperlink{namespace_todo_ada612cc168182607e27b57cc2e716770}{tag\+\_\+invoke}} (boost\+::json\+::value\+\_\+to\+\_\+tag$<$ \mbox{\hyperlink{struct_todo_1_1_task_a0dc2492f114687879f5a40951ed832e6}{Todo\+::\+Task\+::\+Status}} $>$, boost\+::json\+::value const \&v)
+\item 
 \mbox{\hyperlink{namespace_todo_a006d055d0f6f09b9e8325e33b9f7cf05}{BOOST\+\_\+\+DESCRIBE\+\_\+\+ENUM}} (\mbox{\hyperlink{struct_todo_1_1_task_a0dc2492f114687879f5a40951ed832e6}{Task\+::\+Status}}, NOT\+\_\+\+STARTED, IN\+\_\+\+PROGRESS, COMPLETED)
 \item 
 \mbox{\hyperlink{namespace_todo_a48f512be13d05d888b975ee28427d7cd}{BOOST\+\_\+\+DESCRIBE\+\_\+\+STRUCT}} (\mbox{\hyperlink{struct_todo_1_1_task}{Task}},(),(desc, child\+\_\+tasks, priority, status))
@@ -219,6 +223,18 @@ void Todo\+::clear\+\_\+input\+\_\+buf (\begin{DoxyParamCaption}{}{}\end{DoxyPar
 \doxysubsubsection{\texorpdfstring{pre\_order\_trav()}{pre\_order\_trav()}}
 {\footnotesize\ttfamily \label{namespace_todo_a42f6ee3e71cc2e80081e5983e742a92f} 
 bool Todo\+::pre\+\_\+order\+\_\+trav (\begin{DoxyParamCaption}\item[{const std\+::vector$<$ \mbox{\hyperlink{struct_todo_1_1_task}{Task}} $>$ \&}]{list}{, }\item[{int \&}]{curr}{, }\item[{const int}]{target}{, }\item[{std\+::vector$<$ \mbox{\hyperlink{namespace_todo_a0f033048846c82ded9882f3706ba4dc5}{u16}} $>$ \&}]{path}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\Hypertarget{namespace_todo_a0138a31201aeef6c1be492a796e69f3e}\index{Todo@{Todo}!tag\_invoke@{tag\_invoke}}
+\index{tag\_invoke@{tag\_invoke}!Todo@{Todo}}
+\doxysubsubsection{\texorpdfstring{tag\_invoke()}{tag\_invoke()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily \label{namespace_todo_a0138a31201aeef6c1be492a796e69f3e} 
+void Todo\+::tag\+\_\+invoke (\begin{DoxyParamCaption}\item[{boost\+::json\+::value\+\_\+from\+\_\+tag}]{}{, }\item[{boost\+::json\+::value \&}]{v}{, }\item[{\mbox{\hyperlink{struct_todo_1_1_task_a0dc2492f114687879f5a40951ed832e6}{Todo\+::\+Task\+::\+Status}} const \&}]{s}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\Hypertarget{namespace_todo_ada612cc168182607e27b57cc2e716770}\index{Todo@{Todo}!tag\_invoke@{tag\_invoke}}
+\index{tag\_invoke@{tag\_invoke}!Todo@{Todo}}
+\doxysubsubsection{\texorpdfstring{tag\_invoke()}{tag\_invoke()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily \label{namespace_todo_ada612cc168182607e27b57cc2e716770} 
+\mbox{\hyperlink{struct_todo_1_1_task_a0dc2492f114687879f5a40951ed832e6}{Todo\+::\+Task\+::\+Status}} Todo\+::tag\+\_\+invoke (\begin{DoxyParamCaption}\item[{boost\+::json\+::value\+\_\+to\+\_\+tag$<$ \mbox{\hyperlink{struct_todo_1_1_task_a0dc2492f114687879f5a40951ed832e6}{Todo\+::\+Task\+::\+Status}} $>$}]{}{, }\item[{boost\+::json\+::value const \&}]{v}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
 
 
 

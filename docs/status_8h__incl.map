@@ -1,9 +1,0 @@
-<map id="src/misc/status.h" name="src/misc/status.h">
-<area shape="rect" id="Node000001" title=" " alt="" coords="70,5,192,31"/>
-<area shape="rect" id="Node000002" title=" " alt="" coords="5,79,137,105"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="119,33,93,69,89,65,123,29"/>
-<area shape="rect" id="Node000003" href="$types_8h.html" title=" " alt="" coords="160,79,224,105"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="142,29,175,67,169,67,140,34"/>
-<area shape="rect" id="Node000004" title=" " alt="" coords="162,153,222,178"/>
-<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="194,103,195,138,190,135,190,107"/>
-</map>

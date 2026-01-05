@@ -37,5 +37,7 @@ var namespace_todo =
     [ "BOOST_DESCRIBE_STRUCT", "namespace_todo.html#a48f512be13d05d888b975ee28427d7cd", null ],
     [ "clear_input_buf", "namespace_todo.html#a55a5df34f84fbef3cf918b3b7a175c79", null ],
     [ "pre_order_trav", "namespace_todo.html#a42f6ee3e71cc2e80081e5983e742a92f", null ],
+    [ "tag_invoke", "namespace_todo.html#a0138a31201aeef6c1be492a796e69f3e", null ],
+    [ "tag_invoke", "namespace_todo.html#ada612cc168182607e27b57cc2e716770", null ],
     [ "SEN", "namespace_todo.html#aa63f219aa3f7adcccb98d3e6429b9355", null ]
 ];

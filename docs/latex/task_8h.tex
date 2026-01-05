@@ -1,13 +1,15 @@
 \doxysection{src/misc/task.h File Reference}
 \hypertarget{task_8h}{}\label{task_8h}\index{src/misc/task.h@{src/misc/task.h}}
 {\ttfamily \#include $<$boost/describe.\+hpp$>$}\newline
+{\ttfamily \#include $<$boost/json.\+hpp$>$}\newline
 {\ttfamily \#include $<$string$>$}\newline
 {\ttfamily \#include $<$vector$>$}\newline
-Include dependency graph for task.\+h\+:\nopagebreak
+Include dependency graph for task.\+h\+:
+\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
-\includegraphics[width=298pt]{task_8h__incl}
+\includegraphics[width=350pt]{task_8h__incl}
 \end{center}
 \end{figure}
 This graph shows which files directly or indirectly include this file\+:
@@ -30,6 +32,10 @@ namespace \mbox{\hyperlink{namespace_todo}{Todo}}
 \end{DoxyCompactItemize}
 \doxysubsubsection*{Functions}
 \begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{namespace_todo_a0138a31201aeef6c1be492a796e69f3e}{Todo\+::tag\+\_\+invoke}} (boost\+::json\+::value\+\_\+from\+\_\+tag, boost\+::json\+::value \&v, \mbox{\hyperlink{struct_todo_1_1_task_a0dc2492f114687879f5a40951ed832e6}{Todo\+::\+Task\+::\+Status}} const \&s)
+\item 
+\mbox{\hyperlink{struct_todo_1_1_task_a0dc2492f114687879f5a40951ed832e6}{Todo\+::\+Task\+::\+Status}} \mbox{\hyperlink{namespace_todo_ada612cc168182607e27b57cc2e716770}{Todo\+::tag\+\_\+invoke}} (boost\+::json\+::value\+\_\+to\+\_\+tag$<$ \mbox{\hyperlink{struct_todo_1_1_task_a0dc2492f114687879f5a40951ed832e6}{Todo\+::\+Task\+::\+Status}} $>$, boost\+::json\+::value const \&v)
 \item 
 \mbox{\hyperlink{namespace_todo_a006d055d0f6f09b9e8325e33b9f7cf05}{Todo\+::\+BOOST\+\_\+\+DESCRIBE\+\_\+\+ENUM}} (\mbox{\hyperlink{struct_todo_1_1_task_a0dc2492f114687879f5a40951ed832e6}{Task\+::\+Status}}, NOT\+\_\+\+STARTED, IN\+\_\+\+PROGRESS, COMPLETED)
 \item 

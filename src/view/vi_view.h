@@ -55,25 +55,25 @@ public:
   virtual void display_msg(const std::string &msg) override;
 
 private:
-  ///< @brief Refresh list_pad_.
+  /// \brief Refresh list_pad_.
   void refresh_list_view();
 
-  ///< @brief Handles NORMAL mode.
+  /// \brief Handles NORMAL mode.
   UserInput handle_normal();
 
-  ///< @brief Handles REMOVE mode.
+  /// \brief Handles REMOVE mode.
   UserInput handle_remove();
 
-  ///< @brief Handles CHANGE mode.
+  /// \brief Handles CHANGE mode.
   UserInput handle_change();
 
-  ///< @brief Handles INSERT mode.
+  /// \brief Handles INSERT mode.
   UserInput handle_insert();
 
-  ///< @brief Handles CHILD_INSERT mode.
+  /// \brief Handles CHILD_INSERT mode.
   void handle_child_insert();
 
-  ///< @brief Handles SIBLING_INSERT mode.
+  /// \brief Handles SIBLING_INSERT mode.
   void handle_sibling_insert();
 };
 }  // namespace Todo

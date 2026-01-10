@@ -79,6 +79,10 @@ Task *Model::find_task(const std::vector<u64> &path, bool parent)
     flag = 1;
   }
 
+  if (path.empty() == true) {
+    return nullptr;
+  }
+
   Task *curr = &(todo_list_.at(path[0]));
   for (auto it = path.begin() + 1; it < path.end() - flag; ++it) {
     curr = &(curr->child_tasks.at(*it));
@@ -89,28 +93,26 @@ Task *Model::find_task(const std::vector<u64> &path, bool parent)
 
 void Model::add(Task &task, const std::vector<u64> &path)
 {
-  if (path.empty()) {
+  Task *parent_task = find_task(path);
+  if (parent_task == nullptr) {
     todo_list_.emplace_back(std::move(task));
     return;
   }
-
-  Task *parent_task = find_task(path);
   parent_task->child_tasks.emplace_back(std::move(task));
   return;
 }
 
 void Model::remove(const std::vector<u64> &path)
 {
-  if (path.empty()) {
-    return;
-  }
-
   if (path.size() == 1) {
     todo_list_.erase(todo_list_.begin() + path[0]);
     return;
   }
 
   Task *task = find_task(path, true);
+  if (task == nullptr) {
+    return;
+  }
   task->child_tasks.erase(task->child_tasks.begin() + *(path.end() - 1));
 
   return;

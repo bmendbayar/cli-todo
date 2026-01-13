@@ -141,6 +141,10 @@ UserInput ViView::handle_insert()
   std::string buf;
   int ch;
 
+  if (curr_event_ == InsertChain::DESC) {
+    initial_cursor_x_ = cursor_.x;
+  }
+
   if (curr_event_ == InsertChain::PATH) {
     curr_event_ = InsertChain::PRIORITY;
     if (mode_ == Mode::CHILD_INSERT) {
@@ -170,12 +174,12 @@ UserInput ViView::handle_insert()
   }
   buf.reserve(buf_size);
 
-  i16 ini_cursor_x = cursor_.x;
+  i16 padding = cursor_.x;
   for (i16 i{}; i < buf_size; ++i) {
     if (curr_event_ != InsertChain::PRIORITY) {
-      mvwprintw(list_pad_, cursor_.y, ini_cursor_x + 1, "%s",
+      mvwprintw(list_pad_, cursor_.y, padding + 1, "%s",
                 std::string(buf.length() + 5, ' ').c_str());
-      mvwprintw(list_pad_, cursor_.y, ini_cursor_x + 1, "%s", buf.c_str());
+      mvwprintw(list_pad_, cursor_.y, padding + 1, "%s", buf.c_str());
       refresh_list_view();
     }
 
@@ -200,7 +204,7 @@ UserInput ViView::handle_insert()
 
   if (curr_event_ == InsertChain::DATE) {
     curr_event_ = InsertChain::DESC;
-    cursor_.x = 0;
+    cursor_.x = initial_cursor_x_;
     mode_ = Mode::NORMAL;
   }
 

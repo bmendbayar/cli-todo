@@ -16,9 +16,11 @@ private:
     u16 y{};
   } cursor_;  ///< Curses cursor location.
 
-  int border_y_{};       ///< Y-bound of list_pad_.
-  int border_x_{};       ///< X-bound of list_pad_.
-  int scroll_offset_{};  ///< For scrolling convenience.
+  i16 initial_cursor_x_;  ///< For storing the cursor's initial x coord when inserting.
+
+  i16 border_y_{};       ///< Y-bound of list_pad_.
+  i16 border_x_{};       ///< X-bound of list_pad_.
+  i16 scroll_offset_{};  ///< For scrolling convenience.
 
   enum class Mode : u8 {
     NORMAL = 0,

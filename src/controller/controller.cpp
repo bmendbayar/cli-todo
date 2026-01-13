@@ -161,6 +161,21 @@ inline Task::Date parse_date(std::string &&due_date)
   return Task::Date{year, month, day};
 }
 
+inline bool validate_date(const std::chrono::year_month_day &today, const Task::Date &due)
+{
+  if ((int)today.year() > due.year) {
+    return false;
+  }
+  if ((int)today.year() == due.year && (unsigned)today.month() > due.month) {
+    return false;
+  }
+  if ((int)today.year() == due.year && (unsigned)today.month() == due.month &&
+      (unsigned)today.day() > due.day) {
+    return false;
+  }
+  return true;
+}
+
 void Controller::handle_add(int ch)
 {
   try {
@@ -190,14 +205,7 @@ void Controller::handle_add(int ch)
     std::chrono::year_month_day today{std::chrono::floor<std::chrono::days>(now)};
 
     // date validation
-    if ((int)today.year() > date.year) {
-      return;
-    }
-    if ((int)today.year() == date.year && (unsigned)today.month() > date.month) {
-      return;
-    }
-    if ((int)today.year() == date.year && (unsigned)today.month() == date.month &&
-        (unsigned)today.day() > date.day) {
+    if (validate_date(today, date) == false) {
       return;
     }
 

@@ -13,7 +13,9 @@ RemoveAction::RemoveAction(Model &model, std::vector<u64> &&path)
 {
   undo_path_.pop_back();
   Task *curr_task = model_->find_task(exe_path_);
-  task_ = *curr_task;
+  if (curr_task != nullptr) {
+    task_ = *curr_task;
+  }
 }
 
 void RemoveAction::execute()
@@ -32,7 +34,9 @@ AddAction::AddAction(Model &model, std::vector<u64> &&path, Task &&task)
   , task_(std::move(task))
 {
   Task *curr_task = model_->find_task(exe_path_);
-  undo_path_.push_back(curr_task->child_tasks.size());
+  if (curr_task != nullptr) {
+    undo_path_.push_back(curr_task->child_tasks.size());
+  }
 }
 
 void AddAction::execute()
@@ -50,7 +54,9 @@ StatusChangeAction::StatusChangeAction(Model &model, std::vector<u64> &&path, St
   , new_status_(new_status)
 {
   Task *curr_task = model_->find_task(exe_path_);
-  old_status_ = curr_task->status;
+  if (curr_task != nullptr) {
+    old_status_ = curr_task->status;
+  }
 }
 
 void StatusChangeAction::execute()

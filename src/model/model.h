@@ -48,7 +48,7 @@ public:
   /// \brief Changes the completion status of a task.
   /// \param path Path of the task to change.
   /// \param prio Priority to change to.
-  void change_task_priority(const std::vector<u64> &path, const int priority);
+  void change_task_priority(const std::vector<u64> &path, const u16 priority);
 
   /// \brief Returns a const reference of the todo list vector.
   const std::vector<Task> &get_list();

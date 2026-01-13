@@ -1,4 +1,3 @@
-#include <algorithm>
 #include <boost/json.hpp>
 #include <cstdlib>
 #include <filesystem>
@@ -91,30 +90,62 @@ Task *Model::find_task(const std::vector<u64> &path, bool parent)
   return curr;
 }
 
+inline void adjust_ids_add(std::vector<Task> &vector, u16 id)
+{
+  for (u64 i{id}; i < vector.size(); ++i) {
+    vector[i].id++;
+  }
+}
+
+inline void adjust_ids_rm(std::vector<Task> &vector, u16 id)
+{
+  for (u64 i{id}; i < vector.size(); ++i) {
+    vector[i].id--;
+  }
+}
+
 void Model::add(Task &task, const std::vector<u64> &path)
 {
   Task *parent_task = find_task(path);
   if (parent_task == nullptr) {
-    todo_list_.emplace_back(task);
+    // duplicate
+    if (task.id == 0) {
+      task.id = todo_list_.size();
+      todo_list_.emplace_back(task);
+      return;
+    }
+
+    adjust_ids_add(todo_list_, task.id);
+    todo_list_.emplace(todo_list_.cbegin() + task.id, task);
     return;
   }
 
-  parent_task->child_tasks.emplace_back(task);
+  // duplicate
+  if (task.id == 0) {
+    task.id = parent_task->child_tasks.size();
+    parent_task->child_tasks.emplace_back(task);
+    return;
+  }
+
+  adjust_ids_add(parent_task->child_tasks, task.id);
+  parent_task->child_tasks.emplace(parent_task->child_tasks.cbegin() + task.id, task);
   return;
 }
 
 void Model::remove(const std::vector<u64> &path)
 {
   if (path.size() == 1) {
+    adjust_ids_rm(todo_list_, path.back());
     todo_list_.erase(todo_list_.begin() + path[0]);
     return;
   }
 
-  Task *task = find_task(path, true);
-  if (task == nullptr) {
+  Task *parent_task = find_task(path, true);
+  if (parent_task == nullptr) {
     return;
   }
-  task->child_tasks.erase(task->child_tasks.begin() + *(path.end() - 1));
+  adjust_ids_rm(parent_task->child_tasks, path.back());
+  parent_task->child_tasks.erase(parent_task->child_tasks.begin() + *(path.end() - 1));
 
   return;
 }
@@ -165,7 +196,7 @@ void Model::change_task_status(const std::vector<u64> &path, const Status status
   return;
 }
 
-void Model::change_task_priority(const std::vector<u64> &path, const int priority)
+void Model::change_task_priority(const std::vector<u64> &path, const u16 priority)
 {
   if (path.empty()) {
     return;

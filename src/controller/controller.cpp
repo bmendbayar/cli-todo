@@ -222,7 +222,7 @@ void Controller::handle_add(int ch)
       return;
     }
 
-    Task task{std::move(desc.text), (u16)std::stoul(priority.text), {}, std::move(date)};
+    Task task{std::move(desc.text), (u16)std::stoul(priority.text), {}, {}, std::move(date)};
     std::unique_ptr<Action> action =
       std::make_unique<AddAction>(model_, std::move(path_vec), std::move(task));
     action->execute();

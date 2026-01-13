@@ -16,8 +16,6 @@
 #include "view.h"
 
 namespace todo {
-constexpr std::string SEN = "deadbeef";
-
 Controller::Controller(int argc, char **argv)
 {
   if (argc == 1) {
@@ -44,7 +42,7 @@ void Controller::run()
       "0. Exit\n");
 
     MenuOptions opt;
-    if (str_opt.vi_mode == true) {
+    if (str_opt.is_vi_mode == true) {
       if (str_opt.text == "d") {
         opt = MenuOptions::REMOVE;
       } else if (str_opt.text == "x") {
@@ -137,7 +135,7 @@ std::vector<u64> Controller::parse_path(const UserInput &user_input)
 {
   std::vector<u64> path;
 
-  if (user_input.vi_mode == false) {
+  if (user_input.is_vi_mode == false) {
     for (const char &c : user_input.text) {
       if (isdigit(c)) {
         path.emplace_back(c - '0' - 1);
@@ -171,6 +169,22 @@ void Controller::handle_add(int ch)
     UserInput priority = view_->get_input("Enter the priority of the task (1-100): ");
     UserInput due_date = view_->get_input("Enter the due date of the task (dd/mm/yyyy): ");
 
+    if (desc.is_cancelled == true) {
+      return;
+    }
+
+    if (path.is_cancelled == true) {
+      return;
+    }
+
+    if (priority.is_cancelled == true) {
+      return;
+    }
+
+    if (due_date.is_cancelled == true) {
+      return;
+    }
+
     // parse_date() move constructs a stringstream from the input string
     Task::Date date = parse_date(due_date.text);
 
@@ -195,10 +209,6 @@ void Controller::handle_add(int ch)
         return;
       }
       path_vec.pop_back();
-    }
-
-    if (path.text == SEN || priority.text == SEN || desc.text == SEN) {
-      return;
     }
 
     if (std::stoul(priority.text) > 100) {
@@ -226,7 +236,7 @@ void Controller::handle_remove()
 {
   try {
     UserInput path = view_->get_input("Enter the path of the task: ");
-    if (path.text == SEN) {
+    if (path.is_cancelled == true) {
       return;
     }
 
@@ -264,7 +274,12 @@ void Controller::handle_status_change()
   try {
     UserInput path = view_->get_input("Enter the path of the task: ");
     UserInput status = view_->get_input("Which status (1-NS, 2-IP, 3-FIN): ");
-    if (path.text == SEN || status.text == SEN) {
+
+    if (path.is_cancelled == true) {
+      return;
+    }
+
+    if (status.is_cancelled == true) {
       return;
     }
 
@@ -296,8 +311,12 @@ void Controller::handle_prio_change()
 {
   try {
     UserInput path = view_->get_input("Enter the path of the task: ");
-    UserInput prio = view_->get_input("Which priority (1-100): ");
-    if (path.text == SEN || prio.text == SEN) {
+    UserInput priority = view_->get_input("Which priority (1-100): ");
+    if (path.is_cancelled == true) {
+      return;
+    }
+
+    if (priority.is_cancelled == true) {
       return;
     }
 
@@ -306,7 +325,7 @@ void Controller::handle_prio_change()
       return;
     }
 
-    u16 tmp_prio = std::stoul(prio.text);
+    u16 tmp_prio = std::stoul(priority.text);
     if (tmp_prio > 100) {
       return;
     }

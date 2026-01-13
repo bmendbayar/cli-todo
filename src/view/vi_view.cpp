@@ -5,8 +5,6 @@
 #include "vi_view.h"
 
 namespace todo {
-constexpr std::string SEN = "deadbeef";
-
 ViView::ViView()
 {
   initscr();
@@ -60,7 +58,7 @@ UserInput ViView::get_input(const std::string &msg)
       break;
   }
 
-  return {{}, true};
+  return {{}, true, false};
 }
 
 UserInput ViView::handle_normal()
@@ -93,33 +91,33 @@ UserInput ViView::handle_normal()
         break;
 
       case 'g':
-        return {std::string(1, ch), true};
+        return {std::string(1, ch), true, false};
 
       case 'u':
-        return {std::string(1, ch), true};
+        return {std::string(1, ch), true, false};
 
       case 'O':
         mode_ = Mode::SIBLING_INSERT;
-        return {std::string(1, ch), true};
+        return {std::string(1, ch), true, false};
 
       case 'o':
         mode_ = Mode::CHILD_INSERT;
-        return {std::string(1, ch), true};
+        return {std::string(1, ch), true, false};
 
       case 'd':
         mode_ = Mode::REMOVE;
-        return {std::string(1, ch), true};
+        return {std::string(1, ch), true, false};
 
       case 'c':
         mode_ = Mode::CHANGE;
-        return {std::string(1, ch), true};
+        return {std::string(1, ch), true, false};
 
       case 'x':
         mode_ = Mode::CHANGE;
-        return {std::string(1, ch), true};
+        return {std::string(1, ch), true, false};
 
       case 'q':
-        return {std::string(1, ch), true};
+        return {std::string(1, ch), true, false};
 
       default:
         break;
@@ -146,9 +144,9 @@ UserInput ViView::handle_insert()
   if (curr_event_ == InsertChain::PATH) {
     curr_event_ = InsertChain::PRIORITY;
     if (mode_ == Mode::CHILD_INSERT) {
-      return {std::to_string(cursor_.y), true};
+      return {std::to_string(cursor_.y), true, false};
     } else {
-      return {std::to_string(cursor_.y + 1), true};
+      return {std::to_string(cursor_.y + 1), true, false};
     }
   }
 
@@ -187,7 +185,7 @@ UserInput ViView::handle_insert()
     } else if (ch == 27) {  // 27 == esc
       curr_event_ = InsertChain::DESC;
       mode_ = Mode::NORMAL;
-      return {SEN, true};
+      return {{}, true, true};
     } else if (ch == KEY_BACKSPACE || ch == 127 || ch == '\b') {
       if (!buf.empty()) {
         buf.pop_back();
@@ -211,7 +209,7 @@ UserInput ViView::handle_insert()
   }
 
   wclear(notif_);
-  return {buf, true};
+  return {buf, true, false};
 }
 
 void ViView::handle_sibling_insert()
@@ -232,11 +230,11 @@ UserInput ViView::handle_remove()
 {
   int ch = wgetch(list_pad_);
   if (ch == 27) {
-    return {SEN, true};
+    return {{}, true, false};
   }
 
   wclear(notif_);
-  return {std::to_string(cursor_.y + 1), true};
+  return {std::to_string(cursor_.y + 1), true, false};
 }
 
 UserInput ViView::handle_change()
@@ -246,13 +244,13 @@ UserInput ViView::handle_change()
     mode_ = Mode::NORMAL;
   } else if (isdigit(ch)) {
     mode_ = Mode::NORMAL;
-    return {std::string(1, ch), true};
+    return {std::string(1, ch), true, false};
   } else if (ch == 'c' || ch == 'x') {
-    return {std::to_string(cursor_.y + 1), true};
+    return {std::to_string(cursor_.y + 1), true, false};
   }
 
   wclear(notif_);
-  return {SEN, true};
+  return {{}, true, false};
 }
 
 void ViView::display_list(const std::vector<Task> &todo_list, u16 level)

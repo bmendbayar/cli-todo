@@ -11,11 +11,13 @@ struct Task {
   std::string desc;               ///< Description of the task.
   std::vector<Task> child_tasks;  ///< Child tasks.
   uint16_t priority;              ///< Priority of the task.
+  uint16_t id;                    ///< ID of the task.
 
   enum class Status : char {
     NOT_STARTED = 1,
     IN_PROGRESS = 2,
-    COMPLETED = 3
+    COMPLETED = 3,
+    INVALID = 4
   } status;  ///< Completion status of the task.
 
   struct Date {
@@ -23,6 +25,21 @@ struct Task {
     uint16_t month{};
     uint16_t day{};
   } due_date;  ///< Due date of the task.
+
+  Task() = default;
+  Task(const Task &) = default;
+  Task(Task &&) = default;
+  Task &operator=(const Task &) = default;
+  Task &operator=(Task &&) = default;
+
+  Task(std::string &&desc, uint16_t prio, uint16_t id, Status completion, Date &&date)
+    : desc(std::move(desc))
+    , priority(prio)
+    , id(id)
+    , status(completion)
+    , due_date(std::move(date))
+  {
+  }
 
   bool operator==(const Task &other) const
   {
@@ -77,5 +94,5 @@ inline todo::Task::Status tag_invoke(boost::json::value_to_tag<todo::Task::Statu
 
 BOOST_DESCRIBE_ENUM(Task::Status, NOT_STARTED, IN_PROGRESS, COMPLETED);
 BOOST_DESCRIBE_STRUCT(Task::Date, (), (year, month, day));
-BOOST_DESCRIBE_STRUCT(Task, (), (desc, child_tasks, priority, status, due_date));
+BOOST_DESCRIBE_STRUCT(Task, (), (desc, child_tasks, priority, id, status, due_date));
 }  // namespace todo

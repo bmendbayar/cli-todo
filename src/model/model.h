@@ -20,14 +20,14 @@ public:
   /// \brief Sets up the .todo directory and its contents.
   void dir_init();
 
-  /// /brief Adds task with description to todo list.
-  /// /param task The task to add.
-  /// /param path Path of task to add.
-  void add(Task task, const std::vector<u16> &path);
+  /// \brief Adds task with description to todo list.
+  /// \param task A reference to the task to add.
+  /// \param path Path of task to add.
+  void add(Task &task, const std::vector<u64> &path);
 
-  /// /brief Remove task from the todo list.
-  /// /param path Path of the task to remove.
-  void remove(const std::vector<u16> &path);
+  /// \brief Remove task from the todo list.
+  /// \param path Path of the task to remove.
+  void remove(const std::vector<u64> &path);
 
   /// \brief Clears (empties) the list.
   void clear();
@@ -43,15 +43,20 @@ public:
   /// \brief Changes the completion status of a task.
   /// \param path Path of the task to change.
   /// \param status Status to change to.
-  void change_task_status(const std::vector<u16> &path, const Status status);
+  void change_task_status(const std::vector<u64> &path, const Status status);
 
   /// \brief Changes the completion status of a task.
   /// \param path Path of the task to change.
   /// \param prio Priority to change to.
-  void change_task_priority(const std::vector<u16> &path, const int priority);
+  void change_task_priority(const std::vector<u64> &path, const u16 priority);
 
   /// \brief Returns a const reference of the todo list vector.
   const std::vector<Task> &get_list();
+
+  /// \brief Finds task via path
+  /// \param path Path to the task.
+  /// \param parent Flag for finding the parent.
+  Task *find_task(const std::vector<u64> &path, bool parent = false);
 
 private:
   std::vector<Task> todo_list_;  ///< Container to hold todo list tasks

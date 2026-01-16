@@ -5,8 +5,6 @@
 #include "vi_view.h"
 
 namespace todo {
-constexpr std::string SEN = "deadbeef";
-
 ViView::ViView()
 {
   initscr();
@@ -23,6 +21,11 @@ ViView::ViView()
   list_pad_ = newpad(1000, COLS);
   keypad(list_pad_, true);
   set_escdelay(25);
+
+  init_pair(1, COLOR_GREEN, COLOR_BLACK);   // low
+  init_pair(2, COLOR_YELLOW, COLOR_BLACK);  // medium
+  init_pair(3, COLOR_RED, COLOR_BLACK);     // high
+  init_pair(4, COLOR_WHITE, COLOR_BLACK);   // regular text
 }
 
 ViView::~ViView()
@@ -55,7 +58,7 @@ UserInput ViView::get_input(const std::string &msg)
       break;
   }
 
-  return {{}, true};
+  return {{}, true, false};
 }
 
 UserInput ViView::handle_normal()
@@ -88,33 +91,33 @@ UserInput ViView::handle_normal()
         break;
 
       case 'g':
-        return {std::string(1, ch), true};
+        return {std::string(1, ch), true, false};
 
       case 'u':
-        return {std::string(1, ch), true};
+        return {std::string(1, ch), true, false};
 
       case 'O':
         mode_ = Mode::SIBLING_INSERT;
-        return {std::string(1, ch), true};
+        return {std::string(1, ch), true, false};
 
       case 'o':
         mode_ = Mode::CHILD_INSERT;
-        return {std::string(1, ch), true};
+        return {std::string(1, ch), true, false};
 
       case 'd':
         mode_ = Mode::REMOVE;
-        return {std::string(1, ch), true};
+        return {std::string(1, ch), true, false};
 
       case 'c':
         mode_ = Mode::CHANGE;
-        return {std::string(1, ch), true};
+        return {std::string(1, ch), true, false};
 
       case 'x':
         mode_ = Mode::CHANGE;
-        return {std::string(1, ch), true};
+        return {std::string(1, ch), true, false};
 
       case 'q':
-        return {std::string(1, ch), true};
+        return {std::string(1, ch), true, false};
 
       default:
         break;
@@ -138,24 +141,29 @@ UserInput ViView::handle_insert()
   std::string buf;
   int ch;
 
+  if (curr_event_ == InsertChain::DESC) {
+    initial_cursor_x_ = cursor_.x;
+  }
+
   if (curr_event_ == InsertChain::PATH) {
     curr_event_ = InsertChain::PRIORITY;
     if (mode_ == Mode::CHILD_INSERT) {
-      return {std::to_string(cursor_.y), true};
+      return {std::to_string(cursor_.y), true, false};
     } else {
-      return {std::to_string(cursor_.y + 1), true};
+      return {std::to_string(cursor_.y + 1), true, false};
     }
   }
 
   if (mode_ == Mode::CHILD_INSERT && curr_event_ == InsertChain::DESC) {
     handle_child_insert();
+    initial_cursor_x_ = cursor_.x;
     curr_event_ = InsertChain::PATH;
   } else if (mode_ == Mode::SIBLING_INSERT && curr_event_ == InsertChain::DESC) {
     handle_sibling_insert();
+    initial_cursor_x_ = cursor_.x;
     curr_event_ = InsertChain::PATH;
   }
 
-  init_pair(4, COLOR_WHITE, COLOR_BLACK);
   wattron(list_pad_, COLOR_PAIR(4));
 
   i16 buf_size{};
@@ -168,12 +176,12 @@ UserInput ViView::handle_insert()
   }
   buf.reserve(buf_size);
 
-  i16 ini_cursor_x = cursor_.x;
+  i16 padding = cursor_.x;
   for (i16 i{}; i < buf_size; ++i) {
     if (curr_event_ != InsertChain::PRIORITY) {
-      mvwprintw(list_pad_, cursor_.y, ini_cursor_x + 1, "%s",
+      mvwprintw(list_pad_, cursor_.y, padding + 1, "%s",
                 std::string(buf.length() + 5, ' ').c_str());
-      mvwprintw(list_pad_, cursor_.y, ini_cursor_x + 1, "%s", buf.c_str());
+      mvwprintw(list_pad_, cursor_.y, padding + 1, "%s", buf.c_str());
       refresh_list_view();
     }
 
@@ -183,7 +191,7 @@ UserInput ViView::handle_insert()
     } else if (ch == 27) {  // 27 == esc
       curr_event_ = InsertChain::DESC;
       mode_ = Mode::NORMAL;
-      return {SEN, true};
+      return {{}, true, true};
     } else if (ch == KEY_BACKSPACE || ch == 127 || ch == '\b') {
       if (!buf.empty()) {
         buf.pop_back();
@@ -198,7 +206,7 @@ UserInput ViView::handle_insert()
 
   if (curr_event_ == InsertChain::DATE) {
     curr_event_ = InsertChain::DESC;
-    cursor_.x = 0;
+    cursor_.x = initial_cursor_x_;
     mode_ = Mode::NORMAL;
   }
 
@@ -207,17 +215,32 @@ UserInput ViView::handle_insert()
   }
 
   wclear(notif_);
-  return {buf, true};
+  return {buf, true, false};
+}
+
+inline i32 find_indent_lvl(WINDOW *win, int cursor_y)
+{
+  i32 indent{};
+  for (i32 i = 0; i < COLS; ++i) {
+    if ((mvwinch(win, cursor_y, i) & A_CHARTEXT) == '[') {
+      indent = i;
+      break;
+    }
+  }
+  return indent;
 }
 
 void ViView::handle_sibling_insert()
 {
+  cursor_.x = find_indent_lvl(list_pad_, cursor_.y);
+  wmove(list_pad_, cursor_.y, cursor_.x);
   winsertln(list_pad_);
   refresh_list_view();
 }
 
 void ViView::handle_child_insert()
 {
+  cursor_.x = find_indent_lvl(list_pad_, cursor_.y) + 2;
   ++cursor_.y;
   wmove(list_pad_, cursor_.y, cursor_.x);
   winsertln(list_pad_);
@@ -228,11 +251,11 @@ UserInput ViView::handle_remove()
 {
   int ch = wgetch(list_pad_);
   if (ch == 27) {
-    return {SEN, true};
+    return {{}, true, false};
   }
 
   wclear(notif_);
-  return {std::to_string(cursor_.y + 1), true};
+  return {std::to_string(cursor_.y + 1), true, false};
 }
 
 UserInput ViView::handle_change()
@@ -242,13 +265,13 @@ UserInput ViView::handle_change()
     mode_ = Mode::NORMAL;
   } else if (isdigit(ch)) {
     mode_ = Mode::NORMAL;
-    return {std::string(1, ch), true};
+    return {std::string(1, ch), true, false};
   } else if (ch == 'c' || ch == 'x') {
-    return {std::to_string(cursor_.y + 1), true};
+    return {std::to_string(cursor_.y + 1), true, false};
   }
 
   wclear(notif_);
-  return {SEN, true};
+  return {{}, true, false};
 }
 
 void ViView::display_list(const std::vector<Task> &todo_list, u16 level)
@@ -268,9 +291,6 @@ void ViView::display_list(const std::vector<Task> &todo_list, u16 level)
     int y = getcury(list_pad_);
     int x = 1 + (level * 2);
 
-    init_pair(1, COLOR_GREEN, COLOR_BLACK);   // low
-    init_pair(2, COLOR_YELLOW, COLOR_BLACK);  // medium
-    init_pair(3, COLOR_RED, COLOR_BLACK);     // high
     if (task.priority < 30) {
       wattron(list_pad_, COLOR_PAIR(1));
     } else if (task.priority < 70) {

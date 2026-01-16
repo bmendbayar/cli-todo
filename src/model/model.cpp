@@ -71,39 +71,82 @@ void Model::dir_init()
   }
 }
 
-void Model::add(Task task, const std::vector<u16> &path)
+Task *Model::find_task(const std::vector<u64> &path, bool parent)
 {
-  if (path.empty()) {
-    todo_list_.emplace_back(std::move(task));
-    return;
+  u16 flag{};
+  if (parent == true) {
+    flag = 1;
+  }
+
+  if (path.empty() == true) {
+    return nullptr;
   }
 
   Task *curr = &(todo_list_.at(path[0]));
-  for (auto it = path.begin() + 1; it < path.end(); ++it) {
+  for (auto it = path.begin() + 1; it < path.end() - flag; ++it) {
     curr = &(curr->child_tasks.at(*it));
   }
 
-  curr->child_tasks.emplace_back(std::move(task));
-  return;
+  return curr;
 }
 
-void Model::remove(const std::vector<u16> &path)
+inline void adjust_ids_add(std::vector<Task> &vector, u16 id)
 {
-  if (path.empty()) {
+  for (u64 i{id}; i < vector.size(); ++i) {
+    vector[i].id++;
+  }
+}
+
+inline void adjust_ids_rm(std::vector<Task> &vector, u16 id)
+{
+  for (u64 i{id}; i < vector.size(); ++i) {
+    vector[i].id--;
+  }
+}
+
+void Model::add(Task &task, const std::vector<u64> &path)
+{
+  Task *parent_task = find_task(path);
+  if (parent_task == nullptr) {
+    // duplicate
+    if (task.id == 0) {
+      task.id = todo_list_.size();
+      todo_list_.emplace_back(task);
+      return;
+    }
+
+    adjust_ids_add(todo_list_, task.id);
+    todo_list_.emplace(todo_list_.cbegin() + task.id, task);
     return;
   }
 
+  // duplicate
+  if (task.id == 0) {
+    task.id = parent_task->child_tasks.size();
+    parent_task->child_tasks.emplace_back(task);
+    return;
+  }
+
+  adjust_ids_add(parent_task->child_tasks, task.id);
+  parent_task->child_tasks.emplace(parent_task->child_tasks.cbegin() + task.id, task);
+  return;
+}
+
+void Model::remove(const std::vector<u64> &path)
+{
   if (path.size() == 1) {
+    adjust_ids_rm(todo_list_, path.back());
     todo_list_.erase(todo_list_.begin() + path[0]);
     return;
   }
 
-  Task *curr = &(todo_list_.at(path[0]));
-  for (auto it = path.begin() + 1; it < path.end() - 1; ++it) {
-    curr = &(curr->child_tasks.at(*it));
+  Task *parent_task = find_task(path, true);
+  if (parent_task == nullptr) {
+    return;
   }
+  adjust_ids_rm(parent_task->child_tasks, path.back());
+  parent_task->child_tasks.erase(parent_task->child_tasks.begin() + *(path.end() - 1));
 
-  curr->child_tasks.erase(curr->child_tasks.begin() + *(path.end() - 1));
   return;
 }
 
@@ -126,18 +169,18 @@ void Model::change_child_task_status(Task &task, const Status status)
   }
 }
 
-void Model::change_task_status(const std::vector<u16> &path, const Status status)
+void Model::change_task_status(const std::vector<u64> &path, const Status status)
 {
   if (path.empty()) {
     return;
   }
 
+  // necessary duplicate code for task inheritance.
   Task *curr = &(todo_list_.at(path[0]));
   for (auto it = path.begin() + 1; it < path.end(); ++it) {
     if (status == Status::IN_PROGRESS) {
       curr->status = Status::IN_PROGRESS;
     }
-
     curr = &(curr->child_tasks.at(*it));
   }
   curr->status = status;
@@ -153,18 +196,14 @@ void Model::change_task_status(const std::vector<u16> &path, const Status status
   return;
 }
 
-void Model::change_task_priority(const std::vector<u16> &path, const int priority)
+void Model::change_task_priority(const std::vector<u64> &path, const u16 priority)
 {
   if (path.empty()) {
     return;
   }
 
-  Task *curr = &(todo_list_.at(path[0]));
-  for (auto it = path.begin() + 1; it < path.end(); ++it) {
-    curr = &(curr->child_tasks.at(*it));
-  }
-  curr->priority = priority;
-
+  Task *task = find_task(path);
+  task->priority = priority;
   return;
 }
 

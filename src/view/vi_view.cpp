@@ -156,9 +156,11 @@ UserInput ViView::handle_insert()
 
   if (mode_ == Mode::CHILD_INSERT && curr_event_ == InsertChain::DESC) {
     handle_child_insert();
+    initial_cursor_x_ = cursor_.x;
     curr_event_ = InsertChain::PATH;
   } else if (mode_ == Mode::SIBLING_INSERT && curr_event_ == InsertChain::DESC) {
     handle_sibling_insert();
+    initial_cursor_x_ = cursor_.x;
     curr_event_ = InsertChain::PATH;
   }
 
@@ -216,14 +218,29 @@ UserInput ViView::handle_insert()
   return {buf, true, false};
 }
 
+inline i32 find_indent_lvl(WINDOW *win, int cursor_y)
+{
+  i32 indent{};
+  for (i32 i = 0; i < COLS; ++i) {
+    if ((mvwinch(win, cursor_y, i) & A_CHARTEXT) == '[') {
+      indent = i;
+      break;
+    }
+  }
+  return indent;
+}
+
 void ViView::handle_sibling_insert()
 {
+  cursor_.x = find_indent_lvl(list_pad_, cursor_.y);
+  wmove(list_pad_, cursor_.y, cursor_.x);
   winsertln(list_pad_);
   refresh_list_view();
 }
 
 void ViView::handle_child_insert()
 {
+  cursor_.x = find_indent_lvl(list_pad_, cursor_.y) + 2;
   ++cursor_.y;
   wmove(list_pad_, cursor_.y, cursor_.x);
   winsertln(list_pad_);

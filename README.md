@@ -1,4 +1,4 @@
-# CLI Todo
+# Todo CLI
 
 A persistent, hierarchical command-line To-Do application allowing infinite subtasks, built with a flexible architecture to support both rich (Ncurses) and standard text interfaces. See documentation [here](https://bmendbayar.github.io/todo-cli/).
 
@@ -31,7 +31,7 @@ I chose Model-View-Controller (MVC) to decouple data management from the user in
 - [X] Task priority
 - [X] Vi view
 - [X] Undo/redo
-- [ ] Due dates
+- [X] Due dates
 - [ ] Change task description
 
 ## Installation

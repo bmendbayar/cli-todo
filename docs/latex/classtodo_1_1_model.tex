@@ -1,48 +1,56 @@
-\doxysection{todo\+::Model Class Reference}
+\doxysection{todo::\+Model Class Reference}
 \hypertarget{classtodo_1_1_model}{}\label{classtodo_1_1_model}\index{todo::Model@{todo::Model}}
 
 
-{\ttfamily \#include $<$model.\+h$>$}
+{\ttfamily \+\#include $<$model.\+h$>$}
 
 \doxysubsubsection*{Public Member Functions}
 \begin{DoxyCompactItemize}
 \item 
-\mbox{\hyperlink{classtodo_1_1_model_a71a983e0e658a36147187cf8e271e8ba}{Model}} ()
-\begin{DoxyCompactList}\small\item\em Constructs an object by reading from a JSON file. \end{DoxyCompactList}\item 
-void \mbox{\hyperlink{classtodo_1_1_model_a9a2b55d1dca034b956ec8f2e8b34138d}{dir\+\_\+init}} ()
+\doxymbox{\hyperlink{classtodo_1_1_model_a6be069f51c3113d65ecbc08953b9b5b7}{Model}} ()=default
+\item 
+\doxymbox{\hyperlink{classtodo_1_1_model_a1be5aa3b3af202ebef30c5fa124994b9}{\texorpdfstring{$\sim$}{\string~}\+Model}} ()=default
+\item 
+void \doxymbox{\hyperlink{classtodo_1_1_model_a9a2b55d1dca034b956ec8f2e8b34138d}{dir\+\_\+init}} ()
 \begin{DoxyCompactList}\small\item\em Sets up the .todo directory and its contents. \end{DoxyCompactList}\item 
-void \mbox{\hyperlink{classtodo_1_1_model_a8defc20e5ca62b14a6771cc018bd7c9d}{add}} (\mbox{\hyperlink{structtodo_1_1_task}{Task}} \&task, const std\+::vector$<$ \mbox{\hyperlink{namespacetodo_ab22bc1beb51bff792d48b6f9057d50f7}{u64}} $>$ \&path)
+void \doxymbox{\hyperlink{classtodo_1_1_model_a8defc20e5ca62b14a6771cc018bd7c9d}{add}} (\doxymbox{\hyperlink{structtodo_1_1_task}{Task}} \&task, const std::\+vector$<$ \doxymbox{\hyperlink{namespacetodo_ab22bc1beb51bff792d48b6f9057d50f7}{u64}} $>$ \&path)
 \begin{DoxyCompactList}\small\item\em Adds task with description to todo list. \end{DoxyCompactList}\item 
-void \mbox{\hyperlink{classtodo_1_1_model_a54586efb346cd90618a4f65e231eec3d}{remove}} (const std\+::vector$<$ \mbox{\hyperlink{namespacetodo_ab22bc1beb51bff792d48b6f9057d50f7}{u64}} $>$ \&path)
+void \doxymbox{\hyperlink{classtodo_1_1_model_a54586efb346cd90618a4f65e231eec3d}{remove}} (const std::\+vector$<$ \doxymbox{\hyperlink{namespacetodo_ab22bc1beb51bff792d48b6f9057d50f7}{u64}} $>$ \&path)
 \begin{DoxyCompactList}\small\item\em Remove task from the todo list. \end{DoxyCompactList}\item 
-void \mbox{\hyperlink{classtodo_1_1_model_ace3a3bd53595d9f59c8de11c9598fbda}{clear}} ()
+void \doxymbox{\hyperlink{classtodo_1_1_model_ace3a3bd53595d9f59c8de11c9598fbda}{clear}} ()
 \begin{DoxyCompactList}\small\item\em Clears (empties) the list. \end{DoxyCompactList}\item 
-void \mbox{\hyperlink{classtodo_1_1_model_afd1fc965ed45c72608bd47c5a2fd701e}{load\+\_\+file}} ()
+void \doxymbox{\hyperlink{classtodo_1_1_model_afd1fc965ed45c72608bd47c5a2fd701e}{load\+\_\+file}} ()
 \begin{DoxyCompactList}\small\item\em Load from a JSON file to populate todo list vector. \end{DoxyCompactList}\item 
-void \mbox{\hyperlink{classtodo_1_1_model_ad52b94f101290513f2b081ef8670bf46}{save\+\_\+file}} ()
+void \doxymbox{\hyperlink{classtodo_1_1_model_ad52b94f101290513f2b081ef8670bf46}{save\+\_\+file}} ()
 \begin{DoxyCompactList}\small\item\em Save todo list vector to a JSON file. \end{DoxyCompactList}\item 
-void \mbox{\hyperlink{classtodo_1_1_model_ab7b3dcf2cc3832166e6fb6429f26f233}{change\+\_\+task\+\_\+status}} (const std\+::vector$<$ \mbox{\hyperlink{namespacetodo_ab22bc1beb51bff792d48b6f9057d50f7}{u64}} $>$ \&path, const \mbox{\hyperlink{structtodo_1_1_task_a5ed19984d30523d42230049cd5527881}{Status}} status)
+void \doxymbox{\hyperlink{classtodo_1_1_model_a8b4cc01bc1a24b9b11333660e9d6e29f}{change\+\_\+task\+\_\+desc}} (const std::\+vector$<$ \doxymbox{\hyperlink{namespacetodo_ab22bc1beb51bff792d48b6f9057d50f7}{u64}} $>$ \&path, const std::\+string \&desc)
 \begin{DoxyCompactList}\small\item\em Changes the completion status of a task. \end{DoxyCompactList}\item 
-void \mbox{\hyperlink{classtodo_1_1_model_a80e8165d189e69c870354ce27f9c2ee7}{change\+\_\+task\+\_\+priority}} (const std\+::vector$<$ \mbox{\hyperlink{namespacetodo_ab22bc1beb51bff792d48b6f9057d50f7}{u64}} $>$ \&path, const \mbox{\hyperlink{namespacetodo_a01f639f1521effd0c112afd273e8b233}{u16}} priority)
+void \doxymbox{\hyperlink{classtodo_1_1_model_ab7b3dcf2cc3832166e6fb6429f26f233}{change\+\_\+task\+\_\+status}} (const std::\+vector$<$ \doxymbox{\hyperlink{namespacetodo_ab22bc1beb51bff792d48b6f9057d50f7}{u64}} $>$ \&path, const \doxymbox{\hyperlink{structtodo_1_1_task_a5ed19984d30523d42230049cd5527881}{Status}} status)
 \begin{DoxyCompactList}\small\item\em Changes the completion status of a task. \end{DoxyCompactList}\item 
-const std\+::vector$<$ \mbox{\hyperlink{structtodo_1_1_task}{Task}} $>$ \& \mbox{\hyperlink{classtodo_1_1_model_a51bc1b5b4f58b21324f0c5a9cbd77fc1}{get\+\_\+list}} ()
+void \doxymbox{\hyperlink{classtodo_1_1_model_a80e8165d189e69c870354ce27f9c2ee7}{change\+\_\+task\+\_\+priority}} (const std::\+vector$<$ \doxymbox{\hyperlink{namespacetodo_ab22bc1beb51bff792d48b6f9057d50f7}{u64}} $>$ \&path, const \doxymbox{\hyperlink{namespacetodo_a01f639f1521effd0c112afd273e8b233}{u16}} priority)
+\begin{DoxyCompactList}\small\item\em Changes the completion status of a task. \end{DoxyCompactList}\item 
+const std::\+vector$<$ \doxymbox{\hyperlink{structtodo_1_1_task}{Task}} $>$ \& \doxymbox{\hyperlink{classtodo_1_1_model_a51bc1b5b4f58b21324f0c5a9cbd77fc1}{get\+\_\+list}} ()
 \begin{DoxyCompactList}\small\item\em Returns a const reference of the todo list vector. \end{DoxyCompactList}\item 
-\mbox{\hyperlink{structtodo_1_1_task}{Task}} \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{classtodo_1_1_model_ad26c84e05667ad679c24272426d0c11d}{find\+\_\+task}} (const std\+::vector$<$ \mbox{\hyperlink{namespacetodo_ab22bc1beb51bff792d48b6f9057d50f7}{u64}} $>$ \&path, bool parent=false)
-\begin{DoxyCompactList}\small\item\em Finds task via path. \end{DoxyCompactList}\end{DoxyCompactItemize}
+const \doxymbox{\hyperlink{structtodo_1_1_task}{Task}} \texorpdfstring{$\ast$}{*} \doxymbox{\hyperlink{classtodo_1_1_model_a9e5a269ff7629996d892d82b3e304e05}{get\+\_\+task}} (const std::\+vector$<$ \doxymbox{\hyperlink{namespacetodo_ab22bc1beb51bff792d48b6f9057d50f7}{u64}} $>$ \&path)
+\begin{DoxyCompactList}\small\item\em Finds task via path. \end{DoxyCompactList}\item 
+const \doxymbox{\hyperlink{structtodo_1_1_task}{Task}} \texorpdfstring{$\ast$}{*} \doxymbox{\hyperlink{classtodo_1_1_model_ae5ec727034eaf463d3a6691e41d5e8c0}{get\+\_\+parent\+\_\+task}} (const std::\+vector$<$ \doxymbox{\hyperlink{namespacetodo_ab22bc1beb51bff792d48b6f9057d50f7}{u64}} $>$ \&path)
+\begin{DoxyCompactList}\small\item\em Finds parent of task via path. \end{DoxyCompactList}\end{DoxyCompactItemize}
 
 
 \label{doc-constructors}
 \Hypertarget{classtodo_1_1_model_doc-constructors}
 \doxysubsection{Constructor \& Destructor Documentation}
-\Hypertarget{classtodo_1_1_model_a71a983e0e658a36147187cf8e271e8ba}\index{todo::Model@{todo::Model}!Model@{Model}}
+\Hypertarget{classtodo_1_1_model_a6be069f51c3113d65ecbc08953b9b5b7}\index{todo::Model@{todo::Model}!Model@{Model}}
 \index{Model@{Model}!todo::Model@{todo::Model}}
 \doxysubsubsection{\texorpdfstring{Model()}{Model()}}
-{\footnotesize\ttfamily \label{classtodo_1_1_model_a71a983e0e658a36147187cf8e271e8ba} 
-todo\+::\+Model\+::\+Model (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+{\footnotesize\ttfamily \label{classtodo_1_1_model_a6be069f51c3113d65ecbc08953b9b5b7} 
+todo::\+\+Model::\+\+Model (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [default]}}
 
-
-
-Constructs an object by reading from a JSON file. 
+\Hypertarget{classtodo_1_1_model_a1be5aa3b3af202ebef30c5fa124994b9}\index{todo::Model@{todo::Model}!````~Model@{\texorpdfstring{$\sim$}{\string~}Model}}
+\index{````~Model@{\texorpdfstring{$\sim$}{\string~}Model}!todo::Model@{todo::Model}}
+\doxysubsubsection{\texorpdfstring{\texorpdfstring{$\sim$}{\string~}Model()}{\string~Model()}}
+{\footnotesize\ttfamily \label{classtodo_1_1_model_a1be5aa3b3af202ebef30c5fa124994b9} 
+todo::\+\+Model::\+\texorpdfstring{$\sim$}{\string~}\+Model (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [default]}}
 
 
 
@@ -53,7 +61,7 @@ Constructs an object by reading from a JSON file.
 \index{add@{add}!todo::Model@{todo::Model}}
 \doxysubsubsection{\texorpdfstring{add()}{add()}}
 {\footnotesize\ttfamily \label{classtodo_1_1_model_a8defc20e5ca62b14a6771cc018bd7c9d} 
-void todo\+::\+Model\+::add (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structtodo_1_1_task}{Task}} \&}]{task}{, }\item[{const std\+::vector$<$ \mbox{\hyperlink{namespacetodo_ab22bc1beb51bff792d48b6f9057d50f7}{u64}} $>$ \&}]{path}{}\end{DoxyParamCaption})}
+void todo::\+\+Model::\+add (\begin{DoxyParamCaption}\item[{\doxymbox{\hyperlink{structtodo_1_1_task}{Task}} \&}]{task}{, }\item[{const std::\+vector$<$ \doxymbox{\hyperlink{namespacetodo_ab22bc1beb51bff792d48b6f9057d50f7}{u64}} $>$ \&}]{path}{}\end{DoxyParamCaption})}
 
 
 
@@ -66,11 +74,28 @@ Adds task with description to todo list.
 {\em path} & Path of task to add. \\
 \hline
 \end{DoxyParams}
+\Hypertarget{classtodo_1_1_model_a8b4cc01bc1a24b9b11333660e9d6e29f}\index{todo::Model@{todo::Model}!change\_task\_desc@{change\_task\_desc}}
+\index{change\_task\_desc@{change\_task\_desc}!todo::Model@{todo::Model}}
+\doxysubsubsection{\texorpdfstring{change\_task\_desc()}{change\_task\_desc()}}
+{\footnotesize\ttfamily \label{classtodo_1_1_model_a8b4cc01bc1a24b9b11333660e9d6e29f} 
+void todo::\+\+Model::\+change\+\_\+task\+\_\+desc (\begin{DoxyParamCaption}\item[{const std::\+vector$<$ \doxymbox{\hyperlink{namespacetodo_ab22bc1beb51bff792d48b6f9057d50f7}{u64}} $>$ \&}]{path}{, }\item[{const std::\+string \&}]{desc}{}\end{DoxyParamCaption})}
+
+
+
+Changes the completion status of a task. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em path} & Path of the task to change. \\
+\hline
+{\em desc} & Description(str) to change to. \\
+\hline
+\end{DoxyParams}
 \Hypertarget{classtodo_1_1_model_a80e8165d189e69c870354ce27f9c2ee7}\index{todo::Model@{todo::Model}!change\_task\_priority@{change\_task\_priority}}
 \index{change\_task\_priority@{change\_task\_priority}!todo::Model@{todo::Model}}
 \doxysubsubsection{\texorpdfstring{change\_task\_priority()}{change\_task\_priority()}}
 {\footnotesize\ttfamily \label{classtodo_1_1_model_a80e8165d189e69c870354ce27f9c2ee7} 
-void todo\+::\+Model\+::change\+\_\+task\+\_\+priority (\begin{DoxyParamCaption}\item[{const std\+::vector$<$ \mbox{\hyperlink{namespacetodo_ab22bc1beb51bff792d48b6f9057d50f7}{u64}} $>$ \&}]{path}{, }\item[{const \mbox{\hyperlink{namespacetodo_a01f639f1521effd0c112afd273e8b233}{u16}}}]{priority}{}\end{DoxyParamCaption})}
+void todo::\+\+Model::\+change\+\_\+task\+\_\+priority (\begin{DoxyParamCaption}\item[{const std::\+vector$<$ \doxymbox{\hyperlink{namespacetodo_ab22bc1beb51bff792d48b6f9057d50f7}{u64}} $>$ \&}]{path}{, }\item[{const \doxymbox{\hyperlink{namespacetodo_a01f639f1521effd0c112afd273e8b233}{u16}}}]{priority}{}\end{DoxyParamCaption})}
 
 
 
@@ -87,7 +112,7 @@ Changes the completion status of a task.
 \index{change\_task\_status@{change\_task\_status}!todo::Model@{todo::Model}}
 \doxysubsubsection{\texorpdfstring{change\_task\_status()}{change\_task\_status()}}
 {\footnotesize\ttfamily \label{classtodo_1_1_model_ab7b3dcf2cc3832166e6fb6429f26f233} 
-void todo\+::\+Model\+::change\+\_\+task\+\_\+status (\begin{DoxyParamCaption}\item[{const std\+::vector$<$ \mbox{\hyperlink{namespacetodo_ab22bc1beb51bff792d48b6f9057d50f7}{u64}} $>$ \&}]{path}{, }\item[{const \mbox{\hyperlink{structtodo_1_1_task_a5ed19984d30523d42230049cd5527881}{Status}}}]{status}{}\end{DoxyParamCaption})}
+void todo::\+\+Model::\+change\+\_\+task\+\_\+status (\begin{DoxyParamCaption}\item[{const std::\+vector$<$ \doxymbox{\hyperlink{namespacetodo_ab22bc1beb51bff792d48b6f9057d50f7}{u64}} $>$ \&}]{path}{, }\item[{const \doxymbox{\hyperlink{structtodo_1_1_task_a5ed19984d30523d42230049cd5527881}{Status}}}]{status}{}\end{DoxyParamCaption})}
 
 
 
@@ -104,7 +129,7 @@ Changes the completion status of a task.
 \index{clear@{clear}!todo::Model@{todo::Model}}
 \doxysubsubsection{\texorpdfstring{clear()}{clear()}}
 {\footnotesize\ttfamily \label{classtodo_1_1_model_ace3a3bd53595d9f59c8de11c9598fbda} 
-void todo\+::\+Model\+::clear (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+void todo::\+\+Model::\+clear (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
 
 
 
@@ -114,17 +139,42 @@ Clears (empties) the list.
 \index{dir\_init@{dir\_init}!todo::Model@{todo::Model}}
 \doxysubsubsection{\texorpdfstring{dir\_init()}{dir\_init()}}
 {\footnotesize\ttfamily \label{classtodo_1_1_model_a9a2b55d1dca034b956ec8f2e8b34138d} 
-void todo\+::\+Model\+::dir\+\_\+init (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+void todo::\+\+Model::\+dir\+\_\+init (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
 
 
 
 Sets up the .todo directory and its contents. 
 
-\Hypertarget{classtodo_1_1_model_ad26c84e05667ad679c24272426d0c11d}\index{todo::Model@{todo::Model}!find\_task@{find\_task}}
-\index{find\_task@{find\_task}!todo::Model@{todo::Model}}
-\doxysubsubsection{\texorpdfstring{find\_task()}{find\_task()}}
-{\footnotesize\ttfamily \label{classtodo_1_1_model_ad26c84e05667ad679c24272426d0c11d} 
-\mbox{\hyperlink{structtodo_1_1_task}{Task}} \texorpdfstring{$\ast$}{*} todo\+::\+Model\+::find\+\_\+task (\begin{DoxyParamCaption}\item[{const std\+::vector$<$ \mbox{\hyperlink{namespacetodo_ab22bc1beb51bff792d48b6f9057d50f7}{u64}} $>$ \&}]{path}{, }\item[{bool}]{parent}{ = {\ttfamily false}}\end{DoxyParamCaption})}
+\Hypertarget{classtodo_1_1_model_a51bc1b5b4f58b21324f0c5a9cbd77fc1}\index{todo::Model@{todo::Model}!get\_list@{get\_list}}
+\index{get\_list@{get\_list}!todo::Model@{todo::Model}}
+\doxysubsubsection{\texorpdfstring{get\_list()}{get\_list()}}
+{\footnotesize\ttfamily \label{classtodo_1_1_model_a51bc1b5b4f58b21324f0c5a9cbd77fc1} 
+const std::\+vector$<$ \doxymbox{\hyperlink{structtodo_1_1_task}{Task}} $>$ \& todo::\+\+Model::\+get\+\_\+list (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+
+Returns a const reference of the todo list vector. 
+
+\Hypertarget{classtodo_1_1_model_ae5ec727034eaf463d3a6691e41d5e8c0}\index{todo::Model@{todo::Model}!get\_parent\_task@{get\_parent\_task}}
+\index{get\_parent\_task@{get\_parent\_task}!todo::Model@{todo::Model}}
+\doxysubsubsection{\texorpdfstring{get\_parent\_task()}{get\_parent\_task()}}
+{\footnotesize\ttfamily \label{classtodo_1_1_model_ae5ec727034eaf463d3a6691e41d5e8c0} 
+const \doxymbox{\hyperlink{structtodo_1_1_task}{Task}} \texorpdfstring{$\ast$}{*} todo::\+\+Model::\+get\+\_\+parent\+\_\+task (\begin{DoxyParamCaption}\item[{const std::\+vector$<$ \doxymbox{\hyperlink{namespacetodo_ab22bc1beb51bff792d48b6f9057d50f7}{u64}} $>$ \&}]{path}{}\end{DoxyParamCaption})}
+
+
+
+Finds parent of task via path. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em path} & Path to the task. \\
+\hline
+\end{DoxyParams}
+\Hypertarget{classtodo_1_1_model_a9e5a269ff7629996d892d82b3e304e05}\index{todo::Model@{todo::Model}!get\_task@{get\_task}}
+\index{get\_task@{get\_task}!todo::Model@{todo::Model}}
+\doxysubsubsection{\texorpdfstring{get\_task()}{get\_task()}}
+{\footnotesize\ttfamily \label{classtodo_1_1_model_a9e5a269ff7629996d892d82b3e304e05} 
+const \doxymbox{\hyperlink{structtodo_1_1_task}{Task}} \texorpdfstring{$\ast$}{*} todo::\+\+Model::\+get\+\_\+task (\begin{DoxyParamCaption}\item[{const std::\+vector$<$ \doxymbox{\hyperlink{namespacetodo_ab22bc1beb51bff792d48b6f9057d50f7}{u64}} $>$ \&}]{path}{}\end{DoxyParamCaption})}
 
 
 
@@ -134,24 +184,12 @@ Finds task via path.
 \begin{DoxyParams}{Parameters}
 {\em path} & Path to the task. \\
 \hline
-{\em parent} & Flag for finding the parent. \\
-\hline
 \end{DoxyParams}
-\Hypertarget{classtodo_1_1_model_a51bc1b5b4f58b21324f0c5a9cbd77fc1}\index{todo::Model@{todo::Model}!get\_list@{get\_list}}
-\index{get\_list@{get\_list}!todo::Model@{todo::Model}}
-\doxysubsubsection{\texorpdfstring{get\_list()}{get\_list()}}
-{\footnotesize\ttfamily \label{classtodo_1_1_model_a51bc1b5b4f58b21324f0c5a9cbd77fc1} 
-const std\+::vector$<$ \mbox{\hyperlink{structtodo_1_1_task}{Task}} $>$ \& todo\+::\+Model\+::get\+\_\+list (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
-
-
-
-Returns a const reference of the todo list vector. 
-
 \Hypertarget{classtodo_1_1_model_afd1fc965ed45c72608bd47c5a2fd701e}\index{todo::Model@{todo::Model}!load\_file@{load\_file}}
 \index{load\_file@{load\_file}!todo::Model@{todo::Model}}
 \doxysubsubsection{\texorpdfstring{load\_file()}{load\_file()}}
 {\footnotesize\ttfamily \label{classtodo_1_1_model_afd1fc965ed45c72608bd47c5a2fd701e} 
-void todo\+::\+Model\+::load\+\_\+file (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+void todo::\+\+Model::\+load\+\_\+file (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
 
 
 
@@ -164,7 +202,7 @@ Uses boost.\+JSON to parse file.
 \index{remove@{remove}!todo::Model@{todo::Model}}
 \doxysubsubsection{\texorpdfstring{remove()}{remove()}}
 {\footnotesize\ttfamily \label{classtodo_1_1_model_a54586efb346cd90618a4f65e231eec3d} 
-void todo\+::\+Model\+::remove (\begin{DoxyParamCaption}\item[{const std\+::vector$<$ \mbox{\hyperlink{namespacetodo_ab22bc1beb51bff792d48b6f9057d50f7}{u64}} $>$ \&}]{path}{}\end{DoxyParamCaption})}
+void todo::\+\+Model::\+remove (\begin{DoxyParamCaption}\item[{const std::\+vector$<$ \doxymbox{\hyperlink{namespacetodo_ab22bc1beb51bff792d48b6f9057d50f7}{u64}} $>$ \&}]{path}{}\end{DoxyParamCaption})}
 
 
 
@@ -179,7 +217,7 @@ Remove task from the todo list.
 \index{save\_file@{save\_file}!todo::Model@{todo::Model}}
 \doxysubsubsection{\texorpdfstring{save\_file()}{save\_file()}}
 {\footnotesize\ttfamily \label{classtodo_1_1_model_ad52b94f101290513f2b081ef8670bf46} 
-void todo\+::\+Model\+::save\+\_\+file (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+void todo::\+\+Model::\+save\+\_\+file (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
 
 
 
@@ -190,7 +228,7 @@ Uses boost.\+JSON to serialize data.
 \end{DoxyNote}
 
 
-The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+The documentation for this class was generated from the following files:\+\begin{DoxyCompactItemize}
 \item 
-src/model/\mbox{\hyperlink{model_8h}{model.\+h}}\item 
-src/model/\mbox{\hyperlink{model_8cpp}{model.\+cpp}}\end{DoxyCompactItemize}
+src/\+model/\+\doxymbox{\hyperlink{model_8h}{model.\+h}}\item 
+src/\+model/\+\doxymbox{\hyperlink{model_8cpp}{model.\+cpp}}\end{DoxyCompactItemize}

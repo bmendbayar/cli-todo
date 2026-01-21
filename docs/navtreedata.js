@@ -58,7 +58,7 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 "actions_8cpp.html",
-"structtodo_1_1_user_input.html"
+"structtodo_1_1_task.html#ae584d56b87aa28ce31486d9f7c02cb9f"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronization';

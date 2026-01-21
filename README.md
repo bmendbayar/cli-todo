@@ -32,7 +32,7 @@ I chose Model-View-Controller (MVC) to decouple data management from the user in
 - [X] Vi view
 - [X] Undo/redo
 - [X] Due dates
-- [ ] Change task description
+- [X] Change task description
 
 ## Installation
 

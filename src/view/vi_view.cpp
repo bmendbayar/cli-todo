@@ -256,7 +256,7 @@ void ViView::handle_child_insert()
 UserInput ViView::handle_remove()
 {
     int ch = wgetch(list_pad_);
-    if (ch == 27) {
+    if (ch != 'd') {
         return {{}, true, false};
     }
 

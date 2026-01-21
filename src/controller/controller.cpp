@@ -151,13 +151,13 @@ std::vector<u64> Controller::parse_path(const UserInput &user_input)
     std::vector<u64> path;
 
     if (user_input.is_vi_mode == false) {
-        for (const char &c : user_input.text) {
-            if (isdigit(c)) {
-                path.emplace_back(c - '0' - 1);
-            } else {
-                throw std::runtime_error("Error: Path can only be numbers");
-                return {};
-            }
+        std::stringstream ss{std::move(user_input.text)};
+        u64 idx;
+        char delim;
+        while (ss >> idx) {
+            path.push_back(idx);
+
+            ss >> delim;
         }
     } else {
         int x{};
@@ -203,7 +203,9 @@ void Controller::handle_add(int ch)
             return;
         }
 
-        UserInput path = view_->get_input("Enter the path of the new task: ");
+        UserInput path = view_->get_input(
+            "Enter the path of the new task (fmt: x.y.z): "
+        );
         if (path.is_cancelled == true) {
             return;
         }
@@ -216,7 +218,7 @@ void Controller::handle_add(int ch)
         }
 
         UserInput due_date = view_->get_input(
-            "Enter the due date of the task (dd/mm/yyyy): "
+            "Enter the due date of the task (fmt: dd/mm/yyyy): "
         );
         if (due_date.is_cancelled == true) {
             return;

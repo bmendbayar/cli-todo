@@ -31,6 +31,7 @@ private:
         CHANGE = 2,
         SIBLING_INSERT = 3,
         CHILD_INSERT = 4,
+        DESC_CHANGE = 5,
     } mode_{Mode::NORMAL};  ///< Current mode the view is in.
 
     enum class InsertChain : u8 {
@@ -79,6 +80,9 @@ private:
 
     /// \brief Handles INSERT mode.
     UserInput handle_insert();
+
+    /// \brief Handles DESC_CHANGE mode.
+    UserInput handle_desc_change();
 
     /// \brief Handles CHILD_INSERT mode.
     void handle_child_insert();

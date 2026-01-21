@@ -65,6 +65,24 @@ public:
     virtual void undo() override;
 };
 
+class DescChangeAction : public Action {
+private:
+    std::string old_desc_;  ///< Old description of task.
+    std::string new_desc_;  ///< New description of task.
+
+public:
+    /// \brief Parameterized constructor.
+    /// \param model Reference to the model to work with.
+    /// \param path R-value reference to the path of action.
+    DescChangeAction(Model &model, std::vector<u64> &&path, std::string &&desc);
+
+    /// \brief execute action.
+    virtual void execute() override;
+
+    /// \brief undo action.
+    virtual void undo() override;
+};
+
 class StatusChangeAction : public Action {
 private:
     Status new_status_{};  ///< New status of task.

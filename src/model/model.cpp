@@ -52,7 +52,7 @@ void Model::dir_init()
     }
 }
 
-Task *Model::get_parent_task(const std::vector<u64> &path)
+const Task *Model::get_parent_task(const std::vector<u64> &path)
 {
     if (path.empty() == true) {
         return nullptr;
@@ -77,7 +77,7 @@ Task *Model::get_parent_task(const std::vector<u64> &path)
     return curr;
 }
 
-Task *Model::get_task(const std::vector<u64> &path)
+const Task *Model::get_task(const std::vector<u64> &path)
 {
     if (path.empty() == true) {
         return nullptr;
@@ -100,7 +100,7 @@ Task *Model::get_task(const std::vector<u64> &path)
 
 void Model::add(Task &task, const std::vector<u64> &path)
 {
-    Task *parent_task = get_parent_task(path);
+    const Task *parent_task = get_parent_task(path);
     if (parent_task == nullptr) {
         if (path.empty() == true) {
             todo_list_.emplace_back(task);
@@ -111,7 +111,8 @@ void Model::add(Task &task, const std::vector<u64> &path)
         return;
     }
 
-    parent_task->child_tasks.emplace(
+    Task *non_const_pt = const_cast<Task *>(parent_task);
+    non_const_pt->child_tasks.emplace(
         parent_task->child_tasks.cbegin() + *(path.cend() - 1), task
     );
     return;
@@ -125,14 +126,16 @@ void Model::remove(const std::vector<u64> &path)
     }
 
     if (path.empty()) {
-        throw std::runtime_error("rm err: path was empty");
+        throw std::runtime_error("path was empty");
     }
 
-    Task *parent_task = get_parent_task(path);
+    const Task *parent_task = get_parent_task(path);
     if (parent_task == nullptr) {
-        throw std::out_of_range("rm err: parent task was null");
+        throw std::out_of_range("parent task was null");
     }
-    parent_task->child_tasks.erase(
+
+    Task *non_const_pt = const_cast<Task *>(parent_task);
+    non_const_pt->child_tasks.erase(
         parent_task->child_tasks.begin() + *(path.end() - 1)
     );
 
@@ -142,6 +145,30 @@ void Model::remove(const std::vector<u64> &path)
 void Model::clear()
 {
     todo_list_.clear();
+}
+
+void Model::change_task_desc(
+    const std::vector<u64> &path, const std::string &desc
+)
+{
+    if (path.size() == 1) {
+        todo_list_[path[0]].desc = desc;
+        return;
+    }
+
+    if (path.empty()) {
+        throw std::runtime_error("path was empty");
+    }
+
+    const Task *task = get_task(path);
+    if (task == nullptr) {
+        throw std::out_of_range("task was null");
+    }
+
+    Task *non_const_task = const_cast<Task *>(task);
+    non_const_task->desc = desc;
+
+    return;
 }
 
 void Model::change_child_task_status(Task &task, const Status status)
@@ -163,7 +190,7 @@ void Model::change_task_status(
 )
 {
     if (path.empty()) {
-        throw std::runtime_error("change status err: path was empty");
+        throw std::runtime_error("path was empty");
     }
 
     // necessary duplicate code for task inheritance.
@@ -192,11 +219,12 @@ void Model::change_task_priority(
 )
 {
     if (path.empty()) {
-        throw std::runtime_error("change priority err: path was empty");
+        throw std::runtime_error("path was empty");
     }
 
-    Task *task = get_task(path);
-    task->priority = priority;
+    const Task *task = get_task(path);
+    Task *non_const_task = const_cast<Task *>(task);
+    non_const_task->priority = priority;
     return;
 }
 

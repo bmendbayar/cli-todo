@@ -10,7 +10,7 @@ Action::Action(Model &model, std::vector<u64> &&path)
 RemoveAction::RemoveAction(Model &model, std::vector<u64> &&path)
     : Action(model, std::move(path))
 {
-    Task *curr_task = model_->get_task(exe_path_);
+    const Task *curr_task = model_->get_task(exe_path_);
     if (curr_task != nullptr) {
         task_ = *curr_task;
     }
@@ -30,7 +30,7 @@ AddAction::AddAction(Model &model, std::vector<u64> &&path, Task &&task)
     : Action(model, std::move(path))
     , task_(std::move(task))
 {
-    Task *curr_task = model_->get_task(exe_path_);
+    const Task *curr_task = model_->get_task(exe_path_);
     if (curr_task != nullptr) {
         exe_path_.push_back(curr_task->child_tasks.size());
     }
@@ -46,13 +46,33 @@ void AddAction::undo()
     model_->remove(exe_path_);
 }
 
+DescChangeAction::DescChangeAction(
+    Model &model, std::vector<u64> &&path, std::string &&desc
+)
+    : Action(model, std::move(path))
+    , new_desc_(std::move(desc))
+{
+    const Task *curr_task = model_->get_task(exe_path_);
+    old_desc_ = std::move(curr_task->desc);
+}
+
+void DescChangeAction::execute()
+{
+    model_->change_task_desc(exe_path_, new_desc_);
+}
+
+void DescChangeAction::undo()
+{
+    model_->change_task_desc(exe_path_, old_desc_);
+}
+
 StatusChangeAction::StatusChangeAction(
     Model &model, std::vector<u64> &&path, Status new_status
 )
     : Action(model, std::move(path))
     , new_status_(new_status)
 {
-    Task *curr_task = model_->get_task(exe_path_);
+    const Task *curr_task = model_->get_task(exe_path_);
     if (curr_task != nullptr) {
         old_status_ = curr_task->status;
     }
@@ -74,7 +94,7 @@ PriorityChangeAction::PriorityChangeAction(
     : Action(model, std::move(path))
     , new_priority_(new_priority)
 {
-    Task *curr_task = model_->get_task(exe_path_);
+    const Task *curr_task = model_->get_task(exe_path_);
     old_priority_ = curr_task->priority;
 }
 

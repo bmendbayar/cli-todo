@@ -70,6 +70,8 @@ void Controller::run()
                 opt = MenuOptions::UNDO;
             } else if (str_opt.text == "g") {
                 opt = MenuOptions::REDO;
+            } else if (str_opt.text == "v") {
+                opt = MenuOptions::CHANGE_DESC;
             } else {
                 opt = MenuOptions::INVALID;
             }
@@ -88,6 +90,10 @@ void Controller::run()
 
             case MenuOptions::CHANGE_STATUS:
                 handle_status_change();
+                break;
+
+            case MenuOptions::CHANGE_DESC:
+                handle_desc_change();
                 break;
 
             case MenuOptions::CHANGE_PRIO:
@@ -285,6 +291,42 @@ void Controller::handle_remove()
 
         auto action = std::make_unique<RemoveAction>(
             model_, std::move(path_vec)
+        );
+        action->execute();
+        undo_stack_.push(std::move(action));
+
+        while (redo_stack_.empty() == false) {
+            redo_stack_.pop();
+        }
+    } catch (const std::out_of_range &e) {
+        view_->display_msg("Error: Out of range access");
+    } catch (const std::exception &e) {
+        view_->display_msg("Error: " + std::string(e.what()));
+    }
+}
+
+void Controller::handle_desc_change()
+{
+    try {
+        UserInput desc = view_->get_input(
+            "Enter the description of your task: "
+        );
+        if (desc.is_cancelled == true) {
+            return;
+        }
+
+        UserInput path = view_->get_input("Enter the path of the task: ");
+        if (path.is_cancelled == true) {
+            return;
+        }
+
+        auto path_vec = parse_path(path);
+        if (path_vec.empty() == true) {
+            return;
+        }
+
+        auto action = std::make_unique<DescChangeAction>(
+            model_, std::move(path_vec), std::move(desc.text)
         );
         action->execute();
         undo_stack_.push(std::move(action));

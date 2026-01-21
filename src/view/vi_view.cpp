@@ -56,6 +56,8 @@ UserInput ViView::get_input(const std::string &msg)
             return handle_insert();
         case Mode::CHILD_INSERT:
             return handle_insert();
+        case Mode::DESC_CHANGE:
+            return handle_insert();
         default:
             break;
     }
@@ -109,6 +111,10 @@ UserInput ViView::handle_normal()
                 mode_ = Mode::REMOVE;
                 return {std::string(1, ch), true, false};
 
+            case 'v':
+                mode_ = Mode::DESC_CHANGE;
+                return {std::string(1, ch), true, false};
+
             case 'c':
                 mode_ = Mode::CHANGE;
                 return {std::string(1, ch), true, false};
@@ -137,6 +143,21 @@ UserInput ViView::handle_normal()
     }
 }
 
+inline i32 find_indent_lvl(WINDOW *win, int cursor_y)
+{
+    i32 indent{};
+    for (i32 i = 0; i < COLS; ++i) {
+        if ((mvwinch(win, cursor_y, i) & A_CHARTEXT) == '[') {
+            indent = i;
+            break;
+        }
+    }
+    return indent;
+}
+
+/// Works in a cascade type fashion. There are a chain of events that happen
+/// when inserting and depending on the mode the view is currently in, it may
+/// skip a step.
 UserInput ViView::handle_insert()
 {
     std::string buf;
@@ -148,10 +169,15 @@ UserInput ViView::handle_insert()
 
     if (curr_event_ == InsertChain::PATH) {
         curr_event_ = InsertChain::PRIORITY;
-        if (mode_ == Mode::CHILD_INSERT) {
-            return {std::to_string(cursor_.y), true, false};
-        } else {
-            return {std::to_string(cursor_.y + 1), true, false};
+        switch (mode_) {
+            case Mode::CHILD_INSERT:
+                return {std::to_string(cursor_.y), true, false};
+            case Mode::DESC_CHANGE:
+                mode_ = Mode::NORMAL;
+                curr_event_ = InsertChain::DESC;
+            case Mode::SIBLING_INSERT:
+            default:
+                return {std::to_string(cursor_.y + 1), true, false};
         }
     }
 
@@ -164,6 +190,14 @@ UserInput ViView::handle_insert()
         handle_sibling_insert();
         initial_cursor_x_ = cursor_.x;
         curr_event_ = InsertChain::PATH;
+    } else if (mode_ == Mode::DESC_CHANGE && curr_event_ == InsertChain::DESC) {
+        // find text starting point and erase
+        cursor_.x = find_indent_lvl(list_pad_, cursor_.y) + 2;
+        initial_cursor_x_ = cursor_.x;
+        curr_event_ = InsertChain::PATH;
+        for (u16 i{cursor_.x}; i < COLS; ++i) {
+            mvwprintw(list_pad_, cursor_.y, i, " ");
+        }
     }
 
     wattron(list_pad_, COLOR_PAIR(4));
@@ -174,7 +208,7 @@ UserInput ViView::handle_insert()
     } else if (curr_event_ == InsertChain::PRIORITY) {
         buf_size = 3;
     } else {
-        buf_size = 50;
+        buf_size = COLS;
     }
     buf.reserve(buf_size);
 
@@ -222,18 +256,6 @@ UserInput ViView::handle_insert()
     }
 
     return {buf, true, false};
-}
-
-inline i32 find_indent_lvl(WINDOW *win, int cursor_y)
-{
-    i32 indent{};
-    for (i32 i = 0; i < COLS; ++i) {
-        if ((mvwinch(win, cursor_y, i) & A_CHARTEXT) == '[') {
-            indent = i;
-            break;
-        }
-    }
-    return indent;
 }
 
 void ViView::handle_sibling_insert()

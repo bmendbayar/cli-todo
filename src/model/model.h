@@ -44,6 +44,13 @@ public:
 
     /// \brief Changes the completion status of a task.
     /// \param path Path of the task to change.
+    /// \param desc Description(str) to change to.
+    void change_task_desc(
+        const std::vector<u64> &path, const std::string &desc
+    );
+
+    /// \brief Changes the completion status of a task.
+    /// \param path Path of the task to change.
     /// \param status Status to change to.
     void change_task_status(const std::vector<u64> &path, const Status status);
 
@@ -57,11 +64,11 @@ public:
 
     /// \brief Finds task via path.
     /// \param path Path to the task.
-    Task *get_task(const std::vector<u64> &path);
+    const Task *get_task(const std::vector<u64> &path);
 
     /// \brief Finds parent of task via path.
     /// \param path Path to the task.
-    Task *get_parent_task(const std::vector<u64> &path);
+    const Task *get_parent_task(const std::vector<u64> &path);
 
 private:
     std::vector<Task> todo_list_;  ///< Container to hold todo list tasks

@@ -10,7 +10,7 @@
 namespace todo {
 class Controller {
 private:
-    Model model_;                 ///< The [M]odel of the MVC.
+    Model model_;                          ///< The [M]odel of the MVC.
     std::unique_ptr<View> view_{nullptr};  ///< The [V]iew of the MVC.
 
     std::stack<std::unique_ptr<Action>> undo_stack_;  ///< Undo stack.
@@ -37,6 +37,9 @@ private:
 
     /// \brief Handles the emptying of the list.
     void handle_clear();
+
+    /// \brief Handles the description change of a task.
+    void handle_desc_change();
 
     /// \brief Handles the status change of a task.
     void handle_status_change();

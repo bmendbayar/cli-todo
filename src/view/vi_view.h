@@ -5,15 +5,18 @@
 #include "types.h"
 #include "view.h"
 
-namespace todo {
-class ViView : public View {
+namespace todo
+{
+class ViView : public View
+{
 private:
     WINDOW *list_pad_{nullptr};  ///< Curses pad to display list.
     WINDOW *notif_{
         nullptr
     };  ///< Curses window to display notifications/messages.
 
-    struct {
+    struct
+    {
         u16 x{};
         u16 y{};
     } cursor_;  ///< Curses cursor location.
@@ -25,7 +28,8 @@ private:
     i16 border_x_{};       ///< X-bound of list_pad_.
     i16 scroll_offset_{};  ///< For scrolling convenience.
 
-    enum class Mode : u8 {
+    enum class Mode : u8
+    {
         NORMAL = 0,
         REMOVE = 1,
         CHANGE = 2,
@@ -34,7 +38,8 @@ private:
         DESC_CHANGE = 5,
     } mode_{Mode::NORMAL};  ///< Current mode the view is in.
 
-    enum class InsertChain : u8 {
+    enum class InsertChain : u8
+    {
         DESC = 0,
         PATH = 1,
         PRIORITY = 2,

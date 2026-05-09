@@ -8,13 +8,15 @@
 #include "model.h"
 #include "task.h"
 
-namespace todo {
+namespace todo
+{
 void Model::load_file()
 {
     dir_init();
 
     std::ifstream infile{TODO_DIR / TODO_FILE};
-    if (infile.is_open() == false) {
+    if (infile.is_open() == false)
+    {
         throw std::runtime_error("file was not opened");
     }
 
@@ -37,15 +39,18 @@ void Model::save_file()
 
 void Model::dir_init()
 {
-    if (std::filesystem::exists(TODO_DIR) == false) {
+    if (std::filesystem::exists(TODO_DIR) == false)
+    {
         std::filesystem::create_directory(TODO_DIR);
     }
 
-    if (std::filesystem::exists(TODO_DIR / TODO_FILE) == false) {
+    if (std::filesystem::exists(TODO_DIR / TODO_FILE) == false)
+    {
         std::ofstream outfile{TODO_DIR / TODO_FILE};
         outfile << "[]";
 
-        if (outfile.is_open() == false) {
+        if (outfile.is_open() == false)
+        {
             std::cerr << "file could not be initialized\n";
         }
         outfile.close();
@@ -54,21 +59,26 @@ void Model::dir_init()
 
 const Task *Model::get_parent_task(const std::vector<u64> &path)
 {
-    if (path.empty() == true) {
+    if (path.empty() == true)
+    {
         return nullptr;
     }
 
-    if (path.size() <= 1) {
+    if (path.size() <= 1)
+    {
         return nullptr;
     }
 
-    if (todo_list_.size() < path[0]) {
+    if (todo_list_.size() < path[0])
+    {
         return nullptr;
     }
     Task *curr = &(todo_list_[path[0]]);
 
-    for (auto it = path.begin() + 1; it < path.cend() - 1; ++it) {
-        if (todo_list_.size() < *it) {
+    for (auto it = path.begin() + 1; it < path.cend() - 1; ++it)
+    {
+        if (todo_list_.size() < *it)
+        {
             return nullptr;
         }
         curr = &(curr->child_tasks.at(*it));
@@ -79,19 +89,23 @@ const Task *Model::get_parent_task(const std::vector<u64> &path)
 
 const Task *Model::get_task(const std::vector<u64> &path)
 {
-    if (path.empty() == true) {
+    if (path.empty() == true)
+    {
         return nullptr;
     }
 
     auto task = get_parent_task(path);
-    if (task == nullptr) {
-        if (todo_list_.size() < *(path.cend() - 1)) {
+    if (task == nullptr)
+    {
+        if (todo_list_.size() < *(path.cend() - 1))
+        {
             return nullptr;
         }
         return &todo_list_[*(path.cend() - 1)];
     }
 
-    if (task->child_tasks.size() < *(path.cend() - 1)) {
+    if (task->child_tasks.size() < *(path.cend() - 1))
+    {
         return nullptr;
     }
 
@@ -101,8 +115,10 @@ const Task *Model::get_task(const std::vector<u64> &path)
 void Model::add(Task &task, const std::vector<u64> &path)
 {
     const Task *parent_task = get_parent_task(path);
-    if (parent_task == nullptr) {
-        if (path.empty() == true) {
+    if (parent_task == nullptr)
+    {
+        if (path.empty() == true)
+        {
             todo_list_.emplace_back(task);
             return;
         }
@@ -120,17 +136,20 @@ void Model::add(Task &task, const std::vector<u64> &path)
 
 void Model::remove(const std::vector<u64> &path)
 {
-    if (path.size() == 1) {
+    if (path.size() == 1)
+    {
         todo_list_.erase(todo_list_.begin() + path[0]);
         return;
     }
 
-    if (path.empty()) {
+    if (path.empty())
+    {
         throw std::runtime_error("path was empty");
     }
 
     const Task *parent_task = get_parent_task(path);
-    if (parent_task == nullptr) {
+    if (parent_task == nullptr)
+    {
         throw std::out_of_range("parent task was null");
     }
 
@@ -151,17 +170,20 @@ void Model::change_task_desc(
     const std::vector<u64> &path, const std::string &desc
 )
 {
-    if (path.size() == 1) {
+    if (path.size() == 1)
+    {
         todo_list_[path[0]].desc = desc;
         return;
     }
 
-    if (path.empty()) {
+    if (path.empty())
+    {
         throw std::runtime_error("path was empty");
     }
 
     const Task *task = get_task(path);
-    if (task == nullptr) {
+    if (task == nullptr)
+    {
         throw std::out_of_range("task was null");
     }
 
@@ -173,13 +195,16 @@ void Model::change_task_desc(
 
 void Model::change_child_task_status(Task &task, const Status status)
 {
-    if (task.child_tasks.empty() == true) {
+    if (task.child_tasks.empty() == true)
+    {
         return;
     }
 
-    for (auto &t : task.child_tasks) {
+    for (auto &t : task.child_tasks)
+    {
         t.status = status;
-        if (t.child_tasks.empty() == false) {
+        if (t.child_tasks.empty() == false)
+        {
             change_child_task_status(t, status);
         }
     }
@@ -189,25 +214,30 @@ void Model::change_task_status(
     const std::vector<u64> &path, const Status status
 )
 {
-    if (path.empty()) {
+    if (path.empty())
+    {
         throw std::runtime_error("path was empty");
     }
 
     // necessary duplicate code for task inheritance.
     Task *curr = &(todo_list_.at(path[0]));
-    for (auto it = path.begin() + 1; it < path.end(); ++it) {
-        if (status == Status::IN_PROGRESS) {
+    for (auto it = path.begin() + 1; it < path.end(); ++it)
+    {
+        if (status == Status::IN_PROGRESS)
+        {
             curr->status = Status::IN_PROGRESS;
         }
         curr = &(curr->child_tasks.at(*it));
     }
     curr->status = status;
 
-    if (curr->child_tasks.empty() == true) {
+    if (curr->child_tasks.empty() == true)
+    {
         return;
     }
 
-    if (curr->status == Status::COMPLETED) {
+    if (curr->status == Status::COMPLETED)
+    {
         change_child_task_status(*curr, status);
     }
 
@@ -218,7 +248,8 @@ void Model::change_task_priority(
     const std::vector<u64> &path, const u16 priority
 )
 {
-    if (path.empty()) {
+    if (path.empty())
+    {
         throw std::runtime_error("path was empty");
     }
 

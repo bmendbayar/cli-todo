@@ -3,8 +3,10 @@
 #include "task.h"
 #include "view.h"
 
-namespace todo {
-class BasicView : public View {
+namespace todo
+{
+class BasicView : public View
+{
 public:
     /// \brief Default constructor.
     BasicView() = default;
@@ -16,9 +18,7 @@ public:
     /// \brief Display task list to screen.
     /// \param todo_list Const reference to a vector.
     /// \param level Recursion depth.
-    virtual void display_list(
-        const std::vector<Task> &todo_list, u16 level = 0
-    ) override;
+    virtual void display_list(const std::vector<Task> &todo_list, u16 level = 0) override;
 
     /// \brief Display message to screen.
     /// \param msg String to display.

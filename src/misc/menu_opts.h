@@ -1,7 +1,9 @@
 #pragma once
 
-namespace todo {
-enum class MenuOptions {
+namespace todo
+{
+enum class MenuOptions
+{
     EXIT = 0,
     ADD = 1,
     REMOVE = 2,

@@ -4,12 +4,14 @@
 
 #include "view.h"
 
-namespace todo {
-class IView : public View {
+namespace todo
+{
+class IView : public View
+{
 private:
     WINDOW *menu_win_;  ///< Curses window to display the menu.
     WINDOW
-        *list_border_;  ///< Curses window to display a border around the list.
+    *list_border_;      ///< Curses window to display a border around the list.
     WINDOW *list_pad_;  ///< Curses pad(scroll) to display the list.
 
     int scroll_offset_;  ///< Number of y scrolls.
@@ -30,9 +32,7 @@ public:
     /// \brief Display task list to screen.
     /// \param todo_list Const reference to a vector.
     /// \param level Recursion depth.
-    virtual void display_list(
-        const std::vector<Task> &todo_list, u16 level = 0
-    ) override;
+    virtual void display_list(const std::vector<Task> &todo_list, u16 level = 0) override;
 
     /// \brief Display message to screen.
     /// \param msg String to display.

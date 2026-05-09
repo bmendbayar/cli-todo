@@ -6,20 +6,24 @@
 #include <string>
 #include <vector>
 
-namespace todo {
-struct Task {
+namespace todo
+{
+struct Task
+{
     std::string desc;               ///< Description of the task.
     std::vector<Task> child_tasks;  ///< Child tasks.
     uint16_t priority;              ///< Priority of the task.
 
-    enum class Status : char {
+    enum class Status : char
+    {
         NOT_STARTED = 1,
         IN_PROGRESS = 2,
         COMPLETED = 3,
         INVALID = 4
     } status;  ///< Completion status of the task.
 
-    struct Date {
+    struct Date
+    {
         uint16_t year{};
         uint16_t month{};
         uint16_t day{};
@@ -41,31 +45,38 @@ struct Task {
 
     bool operator==(const Task &other) const
     {
-        if (desc != other.desc) {
+        if (desc != other.desc)
+        {
             return false;
         }
 
-        if (priority != other.priority) {
+        if (priority != other.priority)
+        {
             return false;
         }
 
-        if (status != other.status) {
+        if (status != other.status)
+        {
             return false;
         }
 
-        if (child_tasks != other.child_tasks) {
+        if (child_tasks != other.child_tasks)
+        {
             return false;
         }
 
-        if (due_date.year != other.due_date.year) {
+        if (due_date.year != other.due_date.year)
+        {
             return false;
         }
 
-        if (due_date.month != other.due_date.month) {
+        if (due_date.month != other.due_date.month)
+        {
             return false;
         }
 
-        if (due_date.day != other.due_date.day) {
+        if (due_date.day != other.due_date.day)
+        {
             return false;
         }
 
@@ -79,8 +90,7 @@ struct Task {
 };
 
 inline void tag_invoke(
-    boost::json::value_from_tag, boost::json::value &v,
-    todo::Task::Status const &s
+    boost::json::value_from_tag, boost::json::value &v, todo::Task::Status const &s
 )
 {
     v = static_cast<int>(s);

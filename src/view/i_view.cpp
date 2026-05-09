@@ -9,14 +9,16 @@
 #include "i_view.h"
 #include "task.h"
 
-namespace todo {
+namespace todo
+{
 IView::IView()
 {
     initscr();
     cbreak();
     noecho();
     curs_set(0);
-    if (has_colors() == false) {
+    if (has_colors() == false)
+    {
         throw("terminal has no color support");
     }
     start_color();
@@ -66,7 +68,8 @@ UserInput IView::get_input(const std::string &msg)
     int curr_y = 1;
     int padding = 2;
 
-    while (std::getline(ss, line)) {
+    while (std::getline(ss, line))
+    {
         mvwprintw(menu_win_, curr_y, padding, "%s", line.c_str());
         curr_y++;
     }
@@ -78,7 +81,8 @@ UserInput IView::get_input(const std::string &msg)
 
     curs_set(1);
 
-    while (true) {
+    while (true)
+    {
         mvwprintw(menu_win_, curr_y + 1, 2, "> ");
         mvwprintw(
             menu_win_,
@@ -92,21 +96,32 @@ UserInput IView::get_input(const std::string &msg)
 
         ch = wgetch(menu_win_);
 
-        if (ch == '\n') {
+        if (ch == '\n')
+        {
             break;
-        } else if (ch == KEY_UP) {
-            if (scroll_offset_ > 0) {
+        }
+        else if (ch == KEY_UP)
+        {
+            if (scroll_offset_ > 0)
+            {
                 scroll_offset_--;
                 refresh_list_view();
             }
-        } else if (ch == KEY_DOWN) {
+        }
+        else if (ch == KEY_DOWN)
+        {
             scroll_offset_++;
             refresh_list_view();
-        } else if (ch == KEY_BACKSPACE || ch == 127 || ch == '\b') {
-            if (!buffer.empty()) {
+        }
+        else if (ch == KEY_BACKSPACE || ch == 127 || ch == '\b')
+        {
+            if (!buffer.empty())
+            {
                 buffer.pop_back();
             }
-        } else if (isprint(ch)) {
+        }
+        else if (isprint(ch))
+        {
             buffer.push_back(ch);
         }
     }
@@ -117,15 +132,18 @@ UserInput IView::get_input(const std::string &msg)
 
 void IView::display_list(const std::vector<Task> &todo_list, u16 level)
 {
-    if (level == 0) {
+    if (level == 0)
+    {
         wclear(list_pad_);
     }
 
     u16 lsize = todo_list.size();
-    for (u16 i = 0; i < lsize; ++i) {
+    for (u16 i = 0; i < lsize; ++i)
+    {
         const auto &t = todo_list[i];
         std::string status;
-        switch (t.status) {
+        switch (t.status)
+        {
             case Status::NOT_STARTED:
                 status = " ";
                 break;
@@ -145,11 +163,16 @@ void IView::display_list(const std::vector<Task> &todo_list, u16 level)
         init_pair(1, COLOR_GREEN, COLOR_BLACK);   // low
         init_pair(2, COLOR_YELLOW, COLOR_BLACK);  // medium
         init_pair(3, COLOR_RED, COLOR_BLACK);     // high
-        if (t.priority < 30) {
+        if (t.priority < 30)
+        {
             wattron(list_pad_, COLOR_PAIR(1));
-        } else if (t.priority < 70) {
+        }
+        else if (t.priority < 70)
+        {
             wattron(list_pad_, COLOR_PAIR(2));
-        } else {
+        }
+        else
+        {
             wattron(list_pad_, COLOR_PAIR(3));
         }
 
@@ -163,7 +186,8 @@ void IView::display_list(const std::vector<Task> &todo_list, u16 level)
             t.desc.c_str()
         );
 
-        if (!t.child_tasks.empty()) {
+        if (!t.child_tasks.empty())
+        {
             display_list(t.child_tasks, level + 1);
         }
     }

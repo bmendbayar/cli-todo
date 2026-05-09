@@ -16,24 +16,36 @@
 #include "vi_view.h"
 #include "view.h"
 
-namespace todo {
+namespace todo
+{
 Controller::Controller(int argc, char **argv)
 {
-    try {
-        if (argc == 1) {
+    try
+    {
+        if (argc == 1)
+        {
             view_ = std::make_unique<ViView>();
-        } else if (strcmp(argv[1], "-b") == 0) {
+        }
+        else if (strcmp(argv[1], "-b") == 0)
+        {
             view_ = std::make_unique<BasicView>();
-        } else if (strcmp(argv[1], "-i") == 0) {
+        }
+        else if (strcmp(argv[1], "-i") == 0)
+        {
             view_ = std::make_unique<IView>();
         }
 
         model_.load_file();
-    } catch (const std::exception &e) {
-        if (view_ == nullptr) {
+    }
+    catch (const std::exception &e)
+    {
+        if (view_ == nullptr)
+        {
             std::cerr << e.what();
             std::exit(EXIT_FAILURE);
-        } else {
+        }
+        else
+        {
             view_->display_msg(e.what());
         }
     }
@@ -42,7 +54,8 @@ Controller::Controller(int argc, char **argv)
 void Controller::run()
 {
     bool running = true;
-    while (running) {
+    while (running)
+    {
         handle_display();
         UserInput str_opt = view_->get_input(
             "=== todo Menu ===\n"
@@ -55,31 +68,52 @@ void Controller::run()
         );
 
         MenuOptions opt;
-        if (str_opt.is_vi_mode == true) {
-            if (str_opt.text == "d") {
+        if (str_opt.is_vi_mode == true)
+        {
+            if (str_opt.text == "d")
+            {
                 opt = MenuOptions::REMOVE;
-            } else if (str_opt.text == "x") {
+            }
+            else if (str_opt.text == "x")
+            {
                 opt = MenuOptions::CHANGE_PRIO;
-            } else if (str_opt.text == "c") {
+            }
+            else if (str_opt.text == "c")
+            {
                 opt = MenuOptions::CHANGE_STATUS;
-            } else if (str_opt.text == "q") {
+            }
+            else if (str_opt.text == "q")
+            {
                 opt = MenuOptions::EXIT;
-            } else if (str_opt.text == "o" || str_opt.text == "O") {
+            }
+            else if (str_opt.text == "o" || str_opt.text == "O")
+            {
                 opt = MenuOptions::ADD;
-            } else if (str_opt.text == "u") {
+            }
+            else if (str_opt.text == "u")
+            {
                 opt = MenuOptions::UNDO;
-            } else if (str_opt.text == "g") {
+            }
+            else if (str_opt.text == "g")
+            {
                 opt = MenuOptions::REDO;
-            } else if (str_opt.text == "v") {
+            }
+            else if (str_opt.text == "v")
+            {
                 opt = MenuOptions::CHANGE_DESC;
-            } else {
+            }
+            else
+            {
                 opt = MenuOptions::INVALID;
             }
-        } else {
+        }
+        else
+        {
             opt = static_cast<MenuOptions>(std::stoul(str_opt.text));
         }
 
-        switch (opt) {
+        switch (opt)
+        {
             case MenuOptions::ADD:
                 handle_add(str_opt.text[0]);
                 break;
@@ -126,22 +160,26 @@ void Controller::run()
 }
 
 inline bool pre_order_trav(
-    const std::vector<Task> &list, int &curr, const int target,
-    std::vector<u64> &path
+    const std::vector<Task> &list, int &curr, const int target, std::vector<u64> &path
 )
 {
-    for (u64 i{}; i < list.size(); i++) {
+    for (u64 i{}; i < list.size(); i++)
+    {
         path.push_back(i);
-        if (list[i].status != Status::COMPLETED) {
+        if (list[i].status != Status::COMPLETED)
+        {
             ++curr;
         }
 
-        if (curr == target) {
+        if (curr == target)
+        {
             return true;
         }
 
-        if (list[i].child_tasks.empty() == false) {
-            if (pre_order_trav(list[i].child_tasks, curr, target, path)) {
+        if (list[i].child_tasks.empty() == false)
+        {
+            if (pre_order_trav(list[i].child_tasks, curr, target, path))
+            {
                 return true;
             }
         }
@@ -156,16 +194,20 @@ std::vector<u64> Controller::parse_path(const UserInput &user_input)
 {
     std::vector<u64> path;
 
-    if (user_input.is_vi_mode == false) {
+    if (user_input.is_vi_mode == false)
+    {
         std::stringstream ss{std::move(user_input.text)};
         u64 idx;
         char delim;
-        while (ss >> idx) {
+        while (ss >> idx)
+        {
             path.push_back(idx);
 
             ss >> delim;
         }
-    } else {
+    }
+    else
+    {
         int x{};
         pre_order_trav(model_.get_list(), x, std::stoul(user_input.text), path);
     }
@@ -186,14 +228,17 @@ inline bool validate_date(
     const std::chrono::year_month_day &today, const Task::Date &due
 )
 {
-    if ((int)today.year() > due.year) {
+    if ((int)today.year() > due.year)
+    {
         return false;
     }
-    if ((int)today.year() == due.year && (unsigned)today.month() > due.month) {
+    if ((int)today.year() == due.year && (unsigned)today.month() > due.month)
+    {
         return false;
     }
     if ((int)today.year() == due.year && (unsigned)today.month() == due.month &&
-        (unsigned)today.day() > due.day) {
+        (unsigned)today.day() > due.day)
+    {
         return false;
     }
     return true;
@@ -201,32 +246,37 @@ inline bool validate_date(
 
 void Controller::handle_add(int ch)
 {
-    try {
+    try
+    {
         UserInput desc = view_->get_input(
             "Enter the description of your task: "
         );
-        if (desc.is_cancelled == true) {
+        if (desc.is_cancelled == true)
+        {
             return;
         }
 
         UserInput path = view_->get_input(
             "Enter the path of the new task (fmt: x.y.z): "
         );
-        if (path.is_cancelled == true) {
+        if (path.is_cancelled == true)
+        {
             return;
         }
 
         UserInput priority = view_->get_input(
             "Enter the priority of the task (1-100): "
         );
-        if (priority.is_cancelled == true) {
+        if (priority.is_cancelled == true)
+        {
             return;
         }
 
         UserInput due_date = view_->get_input(
             "Enter the due date of the task (fmt: dd/mm/yyyy): "
         );
-        if (due_date.is_cancelled == true) {
+        if (due_date.is_cancelled == true)
+        {
             return;
         }
 
@@ -238,16 +288,19 @@ void Controller::handle_add(int ch)
         };
 
         // date validation
-        if (validate_date(today, date) == false) {
+        if (validate_date(today, date) == false)
+        {
             return;
         }
 
         std::vector<u64> path_vec = parse_path(path);
-        if (ch == 'O' && path_vec.empty() == false) {
+        if (ch == 'O' && path_vec.empty() == false)
+        {
             path_vec.pop_back();
         }
 
-        if (std::stoul(priority.text) > 100) {
+        if (std::stoul(priority.text) > 100)
+        {
             view_->display_msg("priority can only be 1-100");
             return;
         }
@@ -266,26 +319,34 @@ void Controller::handle_add(int ch)
         action->execute();
         undo_stack_.push(std::move(action));
 
-        while (redo_stack_.empty() == false) {
+        while (redo_stack_.empty() == false)
+        {
             redo_stack_.pop();
         }
-    } catch (const std::out_of_range &e) {
+    }
+    catch (const std::out_of_range &e)
+    {
         view_->display_msg("Error: Out of range access");
-    } catch (const std::exception &e) {
+    }
+    catch (const std::exception &e)
+    {
         view_->display_msg("Error: " + std::string(e.what()));
     }
 }
 
 void Controller::handle_remove()
 {
-    try {
+    try
+    {
         UserInput path = view_->get_input("Enter the path of the task: ");
-        if (path.is_cancelled == true) {
+        if (path.is_cancelled == true)
+        {
             return;
         }
 
         auto path_vec = parse_path(path);
-        if (path_vec.empty() == true) {
+        if (path_vec.empty() == true)
+        {
             return;
         }
 
@@ -295,33 +356,42 @@ void Controller::handle_remove()
         action->execute();
         undo_stack_.push(std::move(action));
 
-        while (redo_stack_.empty() == false) {
+        while (redo_stack_.empty() == false)
+        {
             redo_stack_.pop();
         }
-    } catch (const std::out_of_range &e) {
+    }
+    catch (const std::out_of_range &e)
+    {
         view_->display_msg("Error: Out of range access");
-    } catch (const std::exception &e) {
+    }
+    catch (const std::exception &e)
+    {
         view_->display_msg("Error: " + std::string(e.what()));
     }
 }
 
 void Controller::handle_desc_change()
 {
-    try {
+    try
+    {
         UserInput desc = view_->get_input(
             "Enter the description of your task: "
         );
-        if (desc.is_cancelled == true) {
+        if (desc.is_cancelled == true)
+        {
             return;
         }
 
         UserInput path = view_->get_input("Enter the path of the task: ");
-        if (path.is_cancelled == true) {
+        if (path.is_cancelled == true)
+        {
             return;
         }
 
         auto path_vec = parse_path(path);
-        if (path_vec.empty() == true) {
+        if (path_vec.empty() == true)
+        {
             return;
         }
 
@@ -331,12 +401,17 @@ void Controller::handle_desc_change()
         action->execute();
         undo_stack_.push(std::move(action));
 
-        while (redo_stack_.empty() == false) {
+        while (redo_stack_.empty() == false)
+        {
             redo_stack_.pop();
         }
-    } catch (const std::out_of_range &e) {
+    }
+    catch (const std::out_of_range &e)
+    {
         view_->display_msg("Error: Out of range access");
-    } catch (const std::exception &e) {
+    }
+    catch (const std::exception &e)
+    {
         view_->display_msg("Error: " + std::string(e.what()));
     }
 }
@@ -353,26 +428,31 @@ void Controller::handle_clear()
 
 void Controller::handle_status_change()
 {
-    try {
+    try
+    {
         UserInput path = view_->get_input("Enter the path of the task: ");
-        if (path.is_cancelled == true) {
+        if (path.is_cancelled == true)
+        {
             return;
         }
 
         UserInput status = view_->get_input(
             "Which status (1-NS, 2-IP, 3-FIN): "
         );
-        if (status.is_cancelled == true) {
+        if (status.is_cancelled == true)
+        {
             return;
         }
 
         auto path_vec = parse_path(path);
-        if (path_vec.empty() == true) {
+        if (path_vec.empty() == true)
+        {
             return;
         }
 
         Status tmp_status = static_cast<Status>(std::stoul(status.text));
-        if (tmp_status == Status::INVALID) {
+        if (tmp_status == Status::INVALID)
+        {
             return;
         }
 
@@ -382,36 +462,46 @@ void Controller::handle_status_change()
         action->execute();
         undo_stack_.push(std::move(action));
 
-        while (redo_stack_.empty() == false) {
+        while (redo_stack_.empty() == false)
+        {
             redo_stack_.pop();
         }
-    } catch (const std::out_of_range &e) {
+    }
+    catch (const std::out_of_range &e)
+    {
         view_->display_msg("Error: Out of range access");
-    } catch (const std::exception &e) {
+    }
+    catch (const std::exception &e)
+    {
         view_->display_msg("Error: " + std::string(e.what()));
     }
 }
 
 void Controller::handle_prio_change()
 {
-    try {
+    try
+    {
         UserInput path = view_->get_input("Enter the path of the task: ");
-        if (path.is_cancelled == true) {
+        if (path.is_cancelled == true)
+        {
             return;
         }
 
         UserInput priority = view_->get_input("Which priority (1-100): ");
-        if (priority.is_cancelled == true) {
+        if (priority.is_cancelled == true)
+        {
             return;
         }
 
         auto path_vec = parse_path(path);
-        if (path_vec.empty() == true) {
+        if (path_vec.empty() == true)
+        {
             return;
         }
 
         u16 tmp_prio = std::stoul(priority.text);
-        if (tmp_prio > 100) {
+        if (tmp_prio > 100)
+        {
             return;
         }
 
@@ -421,19 +511,25 @@ void Controller::handle_prio_change()
         action->execute();
         undo_stack_.push(std::move(action));
 
-        while (redo_stack_.empty() == false) {
+        while (redo_stack_.empty() == false)
+        {
             redo_stack_.pop();
         }
-    } catch (const std::out_of_range &e) {
+    }
+    catch (const std::out_of_range &e)
+    {
         view_->display_msg("Error: Out of range access");
-    } catch (const std::exception &e) {
+    }
+    catch (const std::exception &e)
+    {
         view_->display_msg("Error: " + std::string(e.what()));
     }
 }
 
 void Controller::handle_undo()
 {
-    if (undo_stack_.empty() == true) {
+    if (undo_stack_.empty() == true)
+    {
         return;
     }
 
@@ -444,7 +540,8 @@ void Controller::handle_undo()
 
 void Controller::handle_redo()
 {
-    if (redo_stack_.empty() == true) {
+    if (redo_stack_.empty() == true)
+    {
         return;
     }
 

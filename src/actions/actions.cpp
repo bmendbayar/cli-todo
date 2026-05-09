@@ -1,6 +1,7 @@
 #include "actions/actions.h"
 
-namespace todo {
+namespace todo
+{
 Action::Action(Model &model, std::vector<u64> &&path)
     : model_(&model)
     , exe_path_(std::move(path))
@@ -11,7 +12,8 @@ RemoveAction::RemoveAction(Model &model, std::vector<u64> &&path)
     : Action(model, std::move(path))
 {
     const Task *curr_task = model_->get_task(exe_path_);
-    if (curr_task != nullptr) {
+    if (curr_task != nullptr)
+    {
         task_ = *curr_task;
     }
 }
@@ -31,7 +33,8 @@ AddAction::AddAction(Model &model, std::vector<u64> &&path, Task &&task)
     , task_(std::move(task))
 {
     const Task *curr_task = model_->get_task(exe_path_);
-    if (curr_task != nullptr) {
+    if (curr_task != nullptr)
+    {
         exe_path_.push_back(curr_task->child_tasks.size());
     }
 }
@@ -73,7 +76,8 @@ StatusChangeAction::StatusChangeAction(
     , new_status_(new_status)
 {
     const Task *curr_task = model_->get_task(exe_path_);
-    if (curr_task != nullptr) {
+    if (curr_task != nullptr)
+    {
         old_status_ = curr_task->status;
     }
 }

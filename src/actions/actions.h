@@ -5,8 +5,10 @@
 #include "model.h"
 #include "types.h"
 
-namespace todo {
-class Action {
+namespace todo
+{
+class Action
+{
 protected:
     Model *model_{nullptr};      ///< Model to perform actions on.
     std::vector<u64> exe_path_;  ///< Path of execution.
@@ -30,7 +32,8 @@ public:
     virtual void undo() = 0;
 };
 
-class RemoveAction : public Action {
+class RemoveAction : public Action
+{
 private:
     Task task_{};  ///< Removed task.
 
@@ -47,7 +50,8 @@ public:
     virtual void undo() override;
 };
 
-class AddAction : public Action {
+class AddAction : public Action
+{
 private:
     Task task_{};  ///< Added task.
 
@@ -65,7 +69,8 @@ public:
     virtual void undo() override;
 };
 
-class DescChangeAction : public Action {
+class DescChangeAction : public Action
+{
 private:
     std::string old_desc_;  ///< Old description of task.
     std::string new_desc_;  ///< New description of task.
@@ -83,7 +88,8 @@ public:
     virtual void undo() override;
 };
 
-class StatusChangeAction : public Action {
+class StatusChangeAction : public Action
+{
 private:
     Status new_status_{};  ///< New status of task.
     Status old_status_{};  ///< Old status of task.
@@ -104,7 +110,8 @@ public:
     virtual void undo() override;
 };
 
-class PriorityChangeAction : public Action {
+class PriorityChangeAction : public Action
+{
 private:
     u16 new_priority_{};  ///< New priority of task.
     u16 old_priority_{};  ///< Old priority of task.
